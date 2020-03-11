@@ -14,8 +14,25 @@ export class HelloworldComponent implements OnInit {
   constructor(private dataService: DataService, private socketService: SocketService) { 
     console.log("test");
 
-    let event = {t: EventType.ON_MOVE, p: {"data": "1234"}} as IColumbusEvent
-    socketService.dispatchEvent(event);
+
+    //-- Event Dispatching Test
+    // let eventPayload = {"data": "1234"}
+    // let event = {t: EventType.ON_MOVE, p: eventPayload} as IColumbusEvent
+    // socketService.dispatchEvent(event);
+
+    //-- Data Service Test
+    dataService.connectedModules.subscribe(n => console.log(n));
+
+    // dataService.addConnectedModule({name: "hi1"})
+    // console.log(dataService.connectedModules.value);
+    // dataService.addConnectedModule({name: "hi2"})
+    // console.log(dataService.connectedModules.value);
+    // dataService.addConnectedModule({name: "hi3"})
+    // console.log(dataService.connectedModules.value);
+
+    // dataService.removeConnectedModuleByIndex(0);
+    
+    // console.log(dataService.connectedModules.value);
   }
 
   ngOnInit() {}

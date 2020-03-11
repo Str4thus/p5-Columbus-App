@@ -4,6 +4,8 @@ import { SocketConfiguration } from 'src/app/util/SocketConfiguration';
 import { IColumbusCommand } from '../../models/IColumbusCommand';
 import { OpCode } from 'src/app/util/Enums';
 import { BehaviorSubject } from 'rxjs';
+import { DataService } from '../data/data.service';
+import { IColumbusModule } from 'src/app/models/IColumbusModule';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class SocketService {
   private socket;
   private isConnected: BehaviorSubject<Boolean> = new BehaviorSubject(false);
 
-  constructor() {
+  constructor(private dataService: DataService) {
     this.initSocket();
   }
 
@@ -24,13 +26,12 @@ export class SocketService {
     this.socket.onclose = e => this.onCloseCallback(e);
   }
 
-  
   public dispatchEvent(data: {}): void {
     let command = {op: OpCode.DISPATCH, d: data} as IColumbusCommand;
     this.sendCommand(command);
   }
 
-  //-- Util
+  //-- Command Utils
   private sendCommand(command: IColumbusCommand): void {
     let commandString = JSON.stringify(command);
     console.log(commandString);
@@ -46,12 +47,12 @@ export class SocketService {
   }
 
   private sendHeartbeatACK(): void {  
-    let command = {op: OpCode.HEARTBEAT_ACK};
+    let command = {op: OpCode.HEARTBEAT_ACK}; // Confirms keep alive
     this.sendCommand(command);
   }
   //-------------
 
-  //-- Callbacks
+  //-- Socket Callbacks
   private onOpenCallback(event): void {
     this.isConnected.next(true);
     console.log("Opened");
@@ -62,7 +63,10 @@ export class SocketService {
     
     switch (data["op"]) {
       case OpCode.HELLO:
-        console.log("Hello: " + data);
+        for (let module of data["d"]["modules"]) {
+          let modelInfo = {name: module, availableEvents: null} as IColumbusModule; // TODO change later to get all data from ["d"]["modules"]
+          this.dataService.addConnectedModule(modelInfo);
+        }
         break;
 
       case OpCode.HEARTBEAT:
