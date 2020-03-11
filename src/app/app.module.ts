@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { DataService } from './services/data/data.service';
+import { SocketService } from './services/socket/socket.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { DataService } from './services/data/data.service';
     StatusBar,
     SplashScreen,
     DataService,
+    SocketService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

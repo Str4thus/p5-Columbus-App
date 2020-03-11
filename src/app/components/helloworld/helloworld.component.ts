@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
 
 @Component({
   selector: 'helloworld',
@@ -8,10 +9,8 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class HelloworldComponent implements OnInit {
 
-  constructor(private dataService: DataService) { 
+  constructor(private dataService: DataService, private socketService: SocketService) { 
     console.log("test");
-    dataService.initSocket();
-    dataService.send("Hi");
   }
 
   ngOnInit() {}
