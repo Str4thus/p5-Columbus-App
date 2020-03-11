@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { SocketConfiguration } from 'src/app/util/SocketConfiguration';
 
+import { IColumbusCommand } from '../../models/IColumbusCommand';
+import { OpCode } from 'src/app/util/Enums';
+import { BehaviorSubject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private socket;
+  private isConnected: BehaviorSubject<Boolean> = new BehaviorSubject(false);
 
   constructor() {
     this.initSocket();
@@ -17,35 +22,63 @@ export class SocketService {
     this.socket.onopen = e => this.onOpenCallback(e);
     this.socket.onmessage = e => this.onMessageCallback(e);
     this.socket.onclose = e => this.onCloseCallback(e);
-    
   }
 
-  private onOpenCallback(event) {
+  
+  public dispatchEvent(data: {}): void {
+    let command = {op: OpCode.DISPATCH, d: data} as IColumbusCommand;
+    this.sendCommand(command);
+  }
+
+  //-- Util
+  private sendCommand(command: IColumbusCommand): void {
+    let commandString = JSON.stringify(command);
+    console.log(commandString);
+
+    if (!this.isConnected.value) {
+      this.isConnected.subscribe(newVal => {
+        if (newVal)
+          this.socket.send(commandString);
+      })
+    } else {
+      this.socket.send(commandString);
+    }
+  }
+
+  private sendHeartbeatACK(): void {  
+    let command = {op: OpCode.HEARTBEAT_ACK};
+    this.sendCommand(command);
+  }
+  //-------------
+
+  //-- Callbacks
+  private onOpenCallback(event): void {
+    this.isConnected.next(true);
     console.log("Opened");
   }
 
-  private onMessageCallback(event) {
-    
-    console.log(this.socket);
-
+  private onMessageCallback(event): void {
     let data = JSON.parse(event.data);
     
     switch (data["op"]) {
-      case 1:
+      case OpCode.HELLO:
         console.log("Hello: " + data);
         break;
-      case 10:
-        console.log("Wanna respond");
-        this.socket.send(JSON.stringify({ "op": 11 }));
+
+      case OpCode.HEARTBEAT:
+        this.sendHeartbeatACK();
         break;
     }
   }
 
-  private onCloseCallback(event) {
+  private onCloseCallback(event): void {
+    this.isConnected.next(false);
+
     if (event.wasClean) {
-      alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+      console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
     } else {
-      alert('[close] Connection died');
+      console.log('[close] Connection died');
     }
   }
+  //---------------
 }
