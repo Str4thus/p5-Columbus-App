@@ -43,7 +43,7 @@ export class ModuleDataService {
     return command;
   }
 
-  private requestToSendCommand(command: ColumbusCommand) {
+  requestToSendCommand(command: ColumbusCommand) {
     this.socketService.sendCommand(command);
   }
 }

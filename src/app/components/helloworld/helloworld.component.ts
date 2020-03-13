@@ -7,10 +7,7 @@ import { SocketService } from 'src/app/services/socket/socket.service';
   styleUrls: ['./helloworld.component.scss'],
 })
 export class HelloworldComponent implements OnInit {
-
-  constructor() { 
-
-  }
-
+  constructor() { }
+  
   ngOnInit() {}
 }
