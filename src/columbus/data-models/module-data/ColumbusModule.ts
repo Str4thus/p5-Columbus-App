@@ -9,7 +9,7 @@ interface IColumbusModule {
 
 export class ColumbusModuleState extends BehaviorSubject<{}> {
     constructor(state: {} = {}) {
-        super({});
+        super(state);
     }
 }
 

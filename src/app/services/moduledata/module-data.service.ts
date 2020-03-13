@@ -13,8 +13,8 @@ export class ModuleDataService {
 
   constructor(private socketService: SocketService) { }
 
-  init(modules: Array<ColumbusModule> = null) {
-    if (modules) {
+  init(...modules: ColumbusModule[]) {
+    if (modules.length > 0) {
       modules.forEach(module => {
         this.addModule(module);
       })
@@ -33,23 +33,30 @@ export class ModuleDataService {
     this.connectedModules.remove(moduleType);
   }
 
-  updateModuleState(moduleType: ColumbusModuleType, moduleState: ColumbusModuleState) {
+  updateModuleState(moduleType: ColumbusModuleType, moduleState: ColumbusModuleState): ColumbusCommand {
+    let oldState = this.connectedModules.get(moduleType);
     this.connectedModules.update(moduleType, moduleState);
+
+    return this.generateCommand(oldState, moduleState);
   }
 
   numberOfConnectedModules() {
     return this.connectedModules.length();
   }
 
+  disconnectAllModules() {
+    this.connectedModules.clear();
+  }
+
   private generateCommand(previousState: ColumbusModuleState, newState: ColumbusModuleState): ColumbusCommand {
-    let changes = Utils.differenceBetweenObjects(previousState, newState);
+    let changes = Utils.differenceBetweenStates(previousState, newState);
     let command = new ColumbusCommand(OpCode.DISPATCH, changes);
 
     this.requestToSendCommand(command);
     return command;
   }
 
-  requestToSendCommand(command: ColumbusCommand) {
+  private requestToSendCommand(command: ColumbusCommand) {
     this.socketService.sendCommand(command);
   }
 }
