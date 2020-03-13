@@ -11,11 +11,13 @@ import { SocketService } from '../socket/socket.service';
 export class ModuleDataService {
   private connectedModules: ModuleDictionary = new ModuleDictionary();
 
-  constructor(private socketService: SocketService) {}
+  constructor(private socketService: SocketService) { }
 
-  init(modules: Array<ColumbusModule>) {
-    for (let module of modules) {
-      this.addModule(module);
+  init(modules: Array<ColumbusModule> = null) {
+    if (modules) {
+      modules.forEach(module => {
+        this.addModule(module);
+      })
     }
   }
 
@@ -35,6 +37,10 @@ export class ModuleDataService {
     this.connectedModules.update(moduleType, moduleState);
   }
 
+  numberOfConnectedModules() {
+    return this.connectedModules.length();
+  }
+
   private generateCommand(previousState: ColumbusModuleState, newState: ColumbusModuleState): ColumbusCommand {
     let changes = Utils.differenceBetweenObjects(previousState, newState);
     let command = new ColumbusCommand(OpCode.DISPATCH, changes);
@@ -49,7 +55,7 @@ export class ModuleDataService {
 }
 
 class ModuleDictionary {
-  dict: {};
+  dict: {} = {};
 
   get(moduleType: ColumbusModuleType): ColumbusModuleState {
     if (this.dict.hasOwnProperty(moduleType))
@@ -71,5 +77,9 @@ class ModuleDictionary {
 
   clear() {
     this.dict = {}
+  }
+
+  length() {
+    return Object.keys(this.dict).length;
   }
 }
