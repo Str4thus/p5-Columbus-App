@@ -1,10 +1,5 @@
-import { ColumbusModuleState } from '../data-models/module-data/ColumbusModule';
-
 export class Utils {
-    static differenceBetweenStates(_stateA: ColumbusModuleState, _stateB: ColumbusModuleState): {} {
-        let stateA = _stateA.value;
-        let stateB = _stateB.value;
-
+    static differenceBetweenStates(stateA: {}, stateB: {}): {} {
         let difference = {}
 
         for (let propA of Object.keys(stateA)) {

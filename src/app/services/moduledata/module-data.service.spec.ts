@@ -31,97 +31,106 @@ describe('ModuleDataService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('Initialization', () => {
-    it('should init correctly from data', () => {
-      let camModule = new ColumbusModule(ColumbusModuleType.CAMERA);
-      let engineModule = new ColumbusModule(ColumbusModuleType.ENGINE, { "is_on": true });
-
-      service.init(camModule, engineModule);
-
-      expect(service.numberOfConnectedModules()).toBe(2);
-      expect(service.getModuleState(ColumbusModuleType.CAMERA)).toBeDefined();
-      expect(service.getModuleState(ColumbusModuleType.ENGINE).value["is_on"]).toBeDefined();
-    });
-
-    it('should init correctly without data', () => {
-      service.init();
-
-      expect(service.numberOfConnectedModules()).toBe(0);
-      expect(service.getModuleState(ColumbusModuleType.CAMERA)).toBe(null);
-    });
-
-    it('should skip duplicates moduletypes', () => {
-      let camModule1 = new ColumbusModule(ColumbusModuleType.CAMERA);
-      let camModule2 = new ColumbusModule(ColumbusModuleType.CAMERA);
-      let engineModule1 = new ColumbusModule(ColumbusModuleType.ENGINE);
-      let engineModule2 = new ColumbusModule(ColumbusModuleType.ENGINE, { "is_on": true });
-
-      service.init(camModule1, camModule2, engineModule1, engineModule2);
-
-      expect(service.numberOfConnectedModules()).toBe(2);
-    })
-  });
-
   describe('Module Management', () => {
-    it('can add new module', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+    describe('General Management', () => {
+      it('counts the correct number of connected modules', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
 
-      service.addModule(module);
+        service.addModule(module);
+        expect(service.numberOfConnectedModules()).toBe(1);
 
-      expect(service.numberOfConnectedModules()).toBe(1);
+        service.addModule(new ColumbusModule(ColumbusModuleType.ENGINE));
+        expect(service.numberOfConnectedModules()).toBe(2);
+
+        service.removeModule(ColumbusModuleType.CAMERA);
+        expect(service.numberOfConnectedModules()).toBe(1);
+      });
+
+      it('can clear module hashmap', () => {
+        let module1 = new ColumbusModule(ColumbusModuleType.CAMERA);
+        let module2 = new ColumbusModule(ColumbusModuleType.ENGINE);
+        let module3 = new ColumbusModule(ColumbusModuleType.LIDAR);
+
+        service.addModules(module1, module2, module3);
+        expect(service.numberOfConnectedModules()).toBe(3);
+
+        service.disconnectAllModules();
+        expect(service.numberOfConnectedModules()).toBe(0);
+      });
     });
 
-    it('cannot add same module twice', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+    describe('Adding Modules', () => {
+      it('throws error when "addModules" receives no argument', () => {
+        expect(() => service.addModules()).toThrowError("Missing module(s) to add!");
+      });
 
-      service.addModule(module);
-      service.addModule(module);
+      it('can add multiple states at once', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
 
-      expect(service.numberOfConnectedModules()).toBe(1);
+        service.addModules(module, module);
+
+        expect(service.numberOfConnectedModules()).toBe(1);
+      });
+
+      it('can add new module without predefined state', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+
+        service.addModule(module);
+
+        expect(service.numberOfConnectedModules()).toBe(1);
+      });
+
+      it('can add new module wtih predefined state', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA, { "updated": false });
+
+        service.addModule(module);
+
+        expect(service.numberOfConnectedModules()).toBe(1);
+        expect(service.getModuleState(ColumbusModuleType.CAMERA).getCurrentState("updated")).toBeFalsy();
+      });
+
+      it('cannot add same module type twice', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+
+        service.addModules(module, module);
+
+        expect(service.numberOfConnectedModules()).toBe(1);
+      });
     });
 
-    it('can remove module', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+    describe('Getting States', () => {
+      it('can get a connected module', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
 
-      service.init(module);
-      service.removeModule(ColumbusModuleType.CAMERA);
+        service.addModule(module);
 
-      expect(service.numberOfConnectedModules()).toBe(0);
-    });
+        expect(service.getModuleState(ColumbusModuleType.CAMERA)).toBe(module.state);
+      });
 
-    it('cannot remove invalid module', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA);
-
-      service.init(module);
-      service.removeModule(ColumbusModuleType.ENGINE);
-
-      expect(service.numberOfConnectedModules()).toBe(1);
-    });
-
-    it('counts the correct number of connected modules', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA);
-
-      service.init(module);
-      expect(service.numberOfConnectedModules()).toBe(1);
-
-      service.addModule(new ColumbusModule(ColumbusModuleType.ENGINE));
-      expect(service.numberOfConnectedModules()).toBe(2);
-
-      service.removeModule(ColumbusModuleType.CAMERA);
-      expect(service.numberOfConnectedModules()).toBe(1);
+      it('gets "null" when the queried module is not connected', () => {
+        expect(service.getModuleState(ColumbusModuleType.CAMERA)).toBe(null);
+      });
     })
 
-    it('can clear', () => {
-      let module1 = new ColumbusModule(ColumbusModuleType.CAMERA);
-      let module2 = new ColumbusModule(ColumbusModuleType.ENGINE);
-      let module3 = new ColumbusModule(ColumbusModuleType.LIDAR);
+    describe('Removing States', () => {
+      it('can remove module', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
 
-      service.init(module1, module2, module3);
-      expect(service.numberOfConnectedModules()).toBe(3);
+        service.addModule(module);
+        service.removeModule(ColumbusModuleType.CAMERA);
 
-      service.disconnectAllModules();
-      expect(service.numberOfConnectedModules()).toBe(0);
-    })
+        expect(service.numberOfConnectedModules()).toBe(0);
+      });
+
+      it('cannot remove invalid module', () => {
+        let module = new ColumbusModule(ColumbusModuleType.CAMERA);
+
+        service.addModule(module);
+        service.removeModule(ColumbusModuleType.ENGINE);
+
+        expect(service.numberOfConnectedModules()).toBe(1);
+      });
+    });
   });
 
   describe('State Management', () => {
@@ -129,24 +138,25 @@ describe('ModuleDataService', () => {
       let module = new ColumbusModule(ColumbusModuleType.CAMERA);
       let newState = new ColumbusModuleState({ "updated": true });
 
-      service.init(module);
+      service.addModule(module);
       expect(service.numberOfConnectedModules()).toBe(1);
 
 
-      let updatedState = service.getModuleState(ColumbusModuleType.CAMERA).value;
+      let updatedState = service.getModuleState(ColumbusModuleType.CAMERA).getCurrentState();
       expect(updatedState["updated"]).toBeFalsy();
+
       service.updateModuleState(ColumbusModuleType.CAMERA, newState);
 
-      updatedState = service.getModuleState(ColumbusModuleType.CAMERA).value;
+      updatedState = service.getModuleState(ColumbusModuleType.CAMERA).getCurrentState();
       expect(updatedState["updated"]).toBeTruthy();
     });
 
     it('generates command based on changes made', () => {
-      let module = new ColumbusModule(ColumbusModuleType.CAMERA, {"updated": false, "model": 123});
+      let module = new ColumbusModule(ColumbusModuleType.CAMERA, { "updated": false, "model": 123 });
       let newState = new ColumbusModuleState({ "model": 123, "updated": true });
 
-      service.init(module);
-      
+      service.addModule(module);
+
       let generatedCommand = service.updateModuleState(ColumbusModuleType.CAMERA, newState);
       let expectedCommand = new ColumbusCommand(OpCode.DISPATCH, { "updated": true });
 
@@ -157,7 +167,7 @@ describe('ModuleDataService', () => {
       let module = new ColumbusModule(ColumbusModuleType.CAMERA);
       let newState = new ColumbusModuleState({ "updated": true });
 
-      service.init(module);
+      service.addModule(module);
       let generatedCommand = service.updateModuleState(ColumbusModuleType.CAMERA, newState);
       let expectedCommand = new ColumbusCommand(OpCode.DISPATCH, { "updated": true });
 

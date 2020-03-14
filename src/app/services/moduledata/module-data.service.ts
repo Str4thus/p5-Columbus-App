@@ -13,14 +13,6 @@ export class ModuleDataService {
 
   constructor(private socketService: SocketService) { }
 
-  init(...modules: ColumbusModule[]) {
-    if (modules.length > 0) {
-      modules.forEach(module => {
-        this.addModule(module);
-      })
-    }
-  }
-
   getModuleState(moduleType: ColumbusModuleType): ColumbusModuleState {
     return this.connectedModules.get(moduleType);
   }
@@ -29,15 +21,25 @@ export class ModuleDataService {
     this.connectedModules.put(module);
   }
 
+  addModules(...modules: ColumbusModule[]) {
+    if (modules.length > 0) {
+      modules.forEach(module => {
+        this.addModule(module);
+      });
+    } else {
+      throw new Error("Missing module(s) to add!");
+    }
+  }
+
   removeModule(moduleType: ColumbusModuleType) {
     this.connectedModules.remove(moduleType);
   }
 
   updateModuleState(moduleType: ColumbusModuleType, moduleState: ColumbusModuleState): ColumbusCommand {
-    let oldState = this.connectedModules.get(moduleType);
+    let state = this.connectedModules.get(moduleType);
     this.connectedModules.update(moduleType, moduleState);
 
-    return this.generateCommand(oldState, moduleState);
+    return this.generateCommand(state);
   }
 
   numberOfConnectedModules() {
@@ -48,8 +50,8 @@ export class ModuleDataService {
     this.connectedModules.clear();
   }
 
-  private generateCommand(previousState: ColumbusModuleState, newState: ColumbusModuleState): ColumbusCommand {
-    let changes = Utils.differenceBetweenStates(previousState, newState);
+  private generateCommand(moduleState: ColumbusModuleState): ColumbusCommand {
+    let changes = Utils.differenceBetweenStates(moduleState.getPreviousState(), moduleState.getCurrentState());
     let command = new ColumbusCommand(OpCode.DISPATCH, changes);
 
     this.requestToSendCommand(command);
@@ -75,7 +77,7 @@ class ModuleDictionary {
   }
 
   update(moduleType: ColumbusModuleType, newState: ColumbusModuleState) {
-    this.dict[moduleType] = newState;
+    this.dict[moduleType].update(newState);
   }
 
   remove(moduleType: ColumbusModuleType) {
