@@ -51,7 +51,7 @@ export class ModuleDataService {
   }
 
   private generateCommand(moduleState: ColumbusModuleState): ColumbusCommand {
-    let changes = Utils.differenceBetweenStates(moduleState.getPreviousState(), moduleState.getCurrentState());
+    let changes = Utils.differenceBetweenObjectsAfterChange(moduleState.getPreviousState(), moduleState.getCurrentState());
     let command = new ColumbusCommand(OpCode.DISPATCH, changes);
 
     this.requestToSendCommand(command);

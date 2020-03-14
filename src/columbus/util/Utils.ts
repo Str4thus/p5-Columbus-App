@@ -1,15 +1,23 @@
 export class Utils {
-    static differenceBetweenStates(stateA: {}, stateB: {}): {} {
+    static differenceBetweenObjectsAfterChange(beforeObj: {}, afterObj: {}): {} {
         let difference = {}
 
-        for (let propA of Object.keys(stateA)) {
-            if (!stateB.hasOwnProperty(propA) || stateA[propA] != stateB[propA])
-                difference[propA] = stateA[propA]
+        for (let beforeProp of Object.keys(beforeObj)) {
+            if (!afterObj.hasOwnProperty(beforeProp)) {
+                difference[beforeProp] = null;
+            }
         }
 
-        for (let propB of Object.keys(stateB)) {
-            if (!stateA.hasOwnProperty(propB) || stateA[propB] != stateB[propB])
-                difference[propB] = stateB[propB]
+        for (let afterProp of Object.keys(afterObj)) {
+            if (!beforeObj.hasOwnProperty(afterProp) || beforeObj[afterProp] != afterObj[afterProp]) {
+                let changes = afterObj[afterProp];
+
+                if(typeof afterObj[afterProp] === typeof {}) {
+                    changes = this.differenceBetweenObjectsAfterChange(beforeObj[afterProp], afterObj[afterProp]) 
+                }
+
+                difference[afterProp] = changes;
+            }
         }
         
         return difference;
