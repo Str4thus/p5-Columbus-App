@@ -1,4 +1,4 @@
-import { OpCode } from '../util/Enums';
+import { OpCode } from '../../util/Enums';
 
 interface IColumbusCommand {
     op: OpCode
@@ -15,11 +15,11 @@ export class ColumbusCommand implements IColumbusCommand {
     }
 
     serialize(): String {
-        let dataObj = {
+        let commandObj = {
             op: this.op,
             d: this.d
         }
 
-        return JSON.stringify(dataObj);
+        return JSON.stringify(commandObj);
     }
 }

@@ -9,8 +9,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { DataService } from './services/data/data.service';
 import { SocketService } from './services/socket/socket.service';
+import { ModuleDataService } from './services/module-data/module-data.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,8 +19,8 @@ import { SocketService } from './services/socket/socket.service';
   providers: [
     StatusBar,
     SplashScreen,
-    DataService,
     SocketService,
+    ModuleDataService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

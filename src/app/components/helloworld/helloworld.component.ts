@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SocketService } from 'src/app/services/socket/socket.service';
+import { CameraControllerService } from 'src/app/services/module-controller/camera-controller/camera-controller.service';
 
 @Component({
   selector: 'helloworld',
@@ -7,7 +7,7 @@ import { SocketService } from 'src/app/services/socket/socket.service';
   styleUrls: ['./helloworld.component.scss'],
 })
 export class HelloworldComponent implements OnInit {
-  constructor() { }
+  constructor(private cameraController: CameraControllerService) {}
   
   ngOnInit() {}
 }

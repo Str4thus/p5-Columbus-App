@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ColumbusModuleType, OpCode } from 'src/columbus/util/Enums';
-import { ColumbusModule, ColumbusModuleState } from 'src/columbus/data-models/module-data/ColumbusModule';
-import { ColumbusCommand } from 'src/columbus/data-models/ColumbusCommand';
+import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
+import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
 import { Utils } from 'src/columbus/util/Utils';
 import { SocketService } from '../socket/socket.service';
+import { ColumbusModuleState } from 'src/columbus/data-models/modules/ColumbusModuleState';
 
 @Injectable({
   providedIn: 'root'

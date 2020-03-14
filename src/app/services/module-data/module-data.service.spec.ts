@@ -2,9 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { ModuleDataService } from './module-data.service';
 import { SocketService } from '../socket/socket.service';
-import { ColumbusCommand } from 'src/columbus/data-models/ColumbusCommand';
+import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
 import { OpCode, ColumbusModuleType } from 'src/columbus/util/Enums';
-import { ColumbusModule, ColumbusModuleState } from 'src/columbus/data-models/module-data/ColumbusModule';
+import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
+import { ColumbusModuleState } from 'src/columbus/data-models/modules/ColumbusModuleState';
 
 describe('ModuleDataService', () => {
   let service: ModuleDataService;
@@ -12,7 +13,7 @@ describe('ModuleDataService', () => {
 
   beforeEach(() => {
     // Mocks
-    mockSocketService = jasmine.createSpyObj("mockSocketService", ["sendCommand"]);
+    mockSocketService = jasmine.createSpyObj("SocketService", ["sendCommand"]);
 
     TestBed.configureTestingModule({
       providers: [
@@ -22,7 +23,7 @@ describe('ModuleDataService', () => {
         }
       ]
     })
-
+    
     // Service
     service = TestBed.get(ModuleDataService);
   });

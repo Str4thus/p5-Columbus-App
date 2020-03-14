@@ -1,4 +1,4 @@
-import { ColumbusModuleState } from "../data-models/module-data/ColumbusModule";
+import { ColumbusModuleState } from "./ColumbusModuleState";
 
 describe('ColumbusModuleState', () => {
 

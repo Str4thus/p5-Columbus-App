@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ColumbusCommand } from 'src/columbus/data-models/ColumbusCommand';
+import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
 
 @Injectable({
   providedIn: 'root'

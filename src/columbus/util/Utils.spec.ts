@@ -1,4 +1,4 @@
-import { Utils } from "../util/Utils";
+import { Utils } from "./Utils";
 
 describe("Utils", () => {
     describe("differenceBetweenObjectsAfterChange", () => {

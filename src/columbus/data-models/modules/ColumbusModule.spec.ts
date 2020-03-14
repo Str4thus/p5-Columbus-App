@@ -1,5 +1,6 @@
-import { ColumbusModule, ColumbusModuleState } from "../data-models/module-data/ColumbusModule";
+import { ColumbusModule } from "./ColumbusModule";
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleState } from './ColumbusModuleState';
 
 describe('ColumbusModule', () => {
 
@@ -29,7 +30,7 @@ describe('ColumbusModule', () => {
                 expect(val).toEqual(newState.value);
             });
             
-            newState = new ColumbusModuleState({"changfed": true});
+            newState = new ColumbusModuleState({"changed": true});
             module.state.update(newState);
             
             newState = new ColumbusModuleState({"changed": false});
