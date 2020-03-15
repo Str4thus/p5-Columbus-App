@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { HelloworldComponent } from 'src/app/components/helloworld/helloworld.component';
-import { ModuleDataService } from 'src/app/services/module-data/module-data.service';
 
 @NgModule({
   imports: [
@@ -19,9 +18,6 @@ import { ModuleDataService } from 'src/app/services/module-data/module-data.serv
         component: HomePage
       }
     ])
-  ],
-  providers: [
-    ModuleDataService
   ],
   declarations: [HomePage, HelloworldComponent]
 })

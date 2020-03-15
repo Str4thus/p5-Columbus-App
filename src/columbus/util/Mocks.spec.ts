@@ -3,7 +3,7 @@ import { ColumbusModuleState } from '../data-models/modules/ColumbusModuleState'
 
 let mockModuleDataSerivceState: ColumbusModuleState;
 export function createMockModuleDataServiceForControllers() {
-    let mockModuleDataService = jasmine.createSpyObj("mockModuleDataService", ["getModuleState", "updateModuleState", "onStateChange"]);
+    let mockModuleDataService = jasmine.createSpyObj("mockModuleDataService", ["addModule", "getModuleState", "updateModuleState", "onStateChange"]);
     mockModuleDataSerivceState = new ColumbusModuleState();
 
     mockModuleDataService.updateModuleState.and.callFake((_, newState) => {

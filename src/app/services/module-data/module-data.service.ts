@@ -12,17 +12,25 @@ import { IStateData } from 'src/columbus/data-models/modules/concrete-states/ISt
 })
 export class ModuleDataService {
   connectedModules: ModuleDictionary = new ModuleDictionary();
+  callback = null;
 
-  constructor(private socketService: SocketService) { 
-    this.addModule(new ColumbusModule(ColumbusModuleType.TEST));
-  }
+  constructor(private socketService: SocketService) {}
 
   getModuleState(moduleType: ColumbusModuleType): ColumbusModuleState {
     return this.connectedModules.get(moduleType);
   }
 
+  isModuleConnected(moduleType: ColumbusModuleType) {
+    return this.connectedModules.get(moduleType) != null;
+  }
+
   addModule(module: ColumbusModule) {
+    console.log("adding");
     this.connectedModules.put(module);
+    
+    console.log(this.callback);
+    if (this.callback)
+      this.callback(module.type, module.state);
   }
 
   addModules(...modules: ColumbusModule[]) {
@@ -33,6 +41,11 @@ export class ModuleDataService {
     } else {
       throw new Error("Missing module(s) to add!");
     }
+  }
+
+  wait(callback: (t, s) => void) {
+    console.log("wait");
+    this.callback = callback;
   }
 
   removeModule(moduleType: ColumbusModuleType) {
@@ -68,20 +81,7 @@ export class ModuleDataService {
 }
 
 class ModuleDictionary {
-  private observers: any[] = [];
-
   dict: {} = {};
-
-  subscribe(x: (type, state) => void) {
-    this.observers.push(x);
-    console.log(this.observers);
-  }
-
-  private notify(type, state) {
-    for (let observer of this.observers) {
-      observer(type, state);
-    }
-  }
 
   get(moduleType: ColumbusModuleType): ColumbusModuleState {
     if (this.dict.hasOwnProperty(moduleType))
@@ -91,7 +91,6 @@ class ModuleDictionary {
 
   put(module: ColumbusModule) {
     this.dict[module.type] = module.state;
-    this.notify(module.type, module.state);
   }
 
   update(moduleType: ColumbusModuleType, newState: IStateData) {
