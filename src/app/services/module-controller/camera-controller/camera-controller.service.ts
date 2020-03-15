@@ -7,22 +7,16 @@ import { ModuleControllerService } from '../module-controller.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CameraControllerService extends ModuleControllerService<ICameraStateData> {
+export class CameraControllerService  {
 
   constructor(moduleDataService: ModuleDataService) {
-    super(moduleDataService, ColumbusModuleType.TEST);
   }
 
   onStateChange(newStateData: ICameraStateData) { }
 
   rotateVertically(deg: number) {
-    this.currentStateData.vrot = deg;
-    this.updateModule();
   }
 
   rotateHorizontally(deg: number) {
-    this.currentStateData.hrot = deg;
-    
-    this.updateModule();
   }
 }

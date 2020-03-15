@@ -7,6 +7,8 @@ export enum OpCode {
 
 export enum ColumbusModuleType {
     TEST = "--..--.-.-.-",
+    TEST2 = "..--.--...-",
+
     CAMERA = "camera",
     LIDAR = "lidar",
     ENGINE = "engine",

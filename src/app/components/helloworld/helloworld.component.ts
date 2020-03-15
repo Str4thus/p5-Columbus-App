@@ -15,6 +15,7 @@ export class HelloworldComponent implements OnInit {
   }
   
   ngOnInit() {
+    // Simulate delayed connection of module
     let x = setInterval(() => {
       this.f.addModule(new ColumbusModule(ColumbusModuleType.TEST));
       

@@ -1,19 +1,34 @@
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
-import { ColumbusModuleState } from './ColumbusModuleState';
 import { IStateData } from './concrete-states/IStateData';
+import { Utils } from 'src/columbus/util/Utils';
 
-
-interface IColumbusModule {
-    type: ColumbusModuleType,
-    state: ColumbusModuleState
-}
-
-export class ColumbusModule implements IColumbusModule {
+export class ColumbusModule {
     type: ColumbusModuleType;
-    state: ColumbusModuleState = new ColumbusModuleState({});
+    private previousState: IStateData = {};
+    private currentState: IStateData;
 
     constructor(type: ColumbusModuleType, state: IStateData = {}) {
         this.type = type;
-        this.state = new ColumbusModuleState(state);
+        this.currentState = state;
+    }
+
+    update(newStateData: IStateData) {
+        this.previousState = Utils.deepClone(this.currentState);
+        this.currentState = Utils.deepClone(newStateData);
+    }
+
+    getPreviousState() {
+        return this.previousState;
+    }
+
+    getCurrentState(prop: string = null) {
+        if (prop) {
+            if (!this.currentState.hasOwnProperty(prop))
+                return null;
+
+            return this.currentState[prop];
+        }
+        
+        return this.currentState;
     }
 }

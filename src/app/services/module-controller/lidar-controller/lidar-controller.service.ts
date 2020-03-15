@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ModuleDataService } from '../../module-data/module-data.service';
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
-import { IEngineStateData } from 'src/columbus/data-models/modules/concrete-states/IEngineStateData';
 import { ModuleControllerService } from '../module-controller.service';
+import { ILidarStateData } from 'src/columbus/data-models/modules/concrete-states/ILidarStateData';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LidarControllerService extends ModuleControllerService<IEngineStateData> {
+export class LidarControllerService {
 
   constructor(moduleDataService: ModuleDataService) {
-    super(moduleDataService, ColumbusModuleType.LIDAR);
+    //super(moduleDataService, ColumbusModuleType.LIDAR);
   }
 
-  onStateChange(newStateData: IEngineStateData) {
+  onStateChange(newStateData: ILidarStateData) {
   }
 }

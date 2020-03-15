@@ -69,9 +69,9 @@ describe("Utils", () => {
             let module = new ColumbusModule(ColumbusModuleType.TEST, { "a": 1, "b": 0, "c": 3 });
             let newStateData = { "a": 0, "b": 0 };
             let expectedChanges = { "a": 0, "c": null }
-            module.state.update(newStateData);
+            module.update(newStateData);
 
-            let actualChanges = Utils.differenceBetweenObjectsAfterChange(module.state.getPreviousState(), module.state.getCurrentState());
+            let actualChanges = Utils.differenceBetweenObjectsAfterChange(module.getPreviousState(), module.getCurrentState());
 
             expect(actualChanges).toEqual(expectedChanges);
         });

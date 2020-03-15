@@ -1,41 +1,74 @@
 import { ColumbusModule } from "./ColumbusModule";
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
-import { ColumbusModuleState } from './ColumbusModuleState';
 import { IStateData } from './concrete-states/IStateData';
 
 describe('ColumbusModule', () => {
+    let testModule: ColumbusModule;
+    let initlialStateData: IStateData;
+    let updatedStateData: IStateData;
+
+    beforeEach(() => {
+        initlialStateData = {"updated": false};
+        updatedStateData = {"updated": true};
+        testModule = new ColumbusModule(ColumbusModuleType.TEST, initlialStateData);
+    });
+
+    it("should have different references for previousState and currentState", () => {
+        testModule.update(updatedStateData);
+
+        expect(testModule.getPreviousState()).toEqual(initlialStateData);
+        expect(testModule.getCurrentState()).toEqual(updatedStateData);
+        expect(testModule.getCurrentState()).not.toEqual(testModule.getPreviousState());
+    });
 
     describe("Creation", () => {
-        it('should be created without state', () => {
-            let module = new ColumbusModule(ColumbusModuleType.TEST);
+        it('should be created without default state', () => {
+            let moduleWithoutDefaultState = new ColumbusModule(ColumbusModuleType.TEST);
 
-            expect(module).toBeTruthy();
-            expect(module.type).toBe(ColumbusModuleType.TEST);
+            expect(moduleWithoutDefaultState).toBeTruthy();
         });
 
-        it('should be created with state', () => {
-            let module = new ColumbusModule(ColumbusModuleType.TEST, { "default": true });
+        it('should be created with default state', () => {
+            let moduleWithDefaultState = new ColumbusModule(ColumbusModuleType.TEST, {"default": true});
 
-            expect(module).toBeTruthy();
-            expect(module.type).toBe(ColumbusModuleType.TEST);
-            expect(module.state.value["default"]).toBeTruthy();
+            expect(moduleWithDefaultState).toBeTruthy();
+            expect(moduleWithDefaultState.getCurrentState("default")).toBeTruthy();
         });
     });
 
-    describe("Usage", () => {
-        it('should be able to subscribe to state and receive new state on change', () => {
-            let module = new ColumbusModule(ColumbusModuleType.TEST);
-            let newStateData: IStateData = {}; // Initial value for the BehaviourSubject is '{}', so the newState is initially '{}' as well to prevent errors during assertions
-
-            module.state.subscribe(val => {
-                expect(val).toEqual(newStateData);
+    describe("Getting States", () => {
+        describe("getCurrentState", () => {
+            it("can get whole current state", () => {
+                expect(testModule.getCurrentState()).toEqual(initlialStateData);
             });
-            
-            newStateData = {"changed": true};
-            module.state.update(newStateData);
-            
-            newStateData = {"changed": false};
-            module.state.update(newStateData);
+
+            it("can get property of current state", () => {
+                expect(testModule.getCurrentState("updated")).toEqual(initlialStateData["updated"]);
+            });
+
+            it("returns null if the queried property is not present", () => {
+                expect(testModule.getCurrentState("notPresent")).toEqual(null);
+            });
+        });
+
+        describe("getPreviousState", () => {
+            it("returns { } if the state hasn't been updated before", () => {
+                expect(testModule.getPreviousState()).toEqual({});
+            });
+
+            it("returns correct previous state", () => {
+                testModule.update(updatedStateData);
+
+                expect(testModule.getPreviousState()).toEqual(initlialStateData);
+            });
+        });
+    });
+
+    describe("Updating", () => {
+        it("correctly saves new state to currentState", () => {
+            testModule.update(updatedStateData);
+
+            expect(testModule.getCurrentState()).toEqual(updatedStateData);
         });
     });
 });
