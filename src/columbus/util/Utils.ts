@@ -1,5 +1,7 @@
+import { IStateData } from '../data-models/modules/concrete-states/IStateData';
+
 export class Utils {
-    static differenceBetweenObjectsAfterChange(beforeObj: {}, afterObj: {}): {} {
+    static differenceBetweenObjectsAfterChange(beforeObj: IStateData, afterObj: IStateData): {} {
         let difference = {}
 
         for (let beforeProp of Object.keys(beforeObj)) {
@@ -21,5 +23,9 @@ export class Utils {
         }
         
         return difference;
+    }
+
+    static deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 }

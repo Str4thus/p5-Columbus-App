@@ -7,6 +7,6 @@ import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusComman
 })
 export class SocketService {
   sendCommand(command: ColumbusCommand): void {
-    console.log("sendCommand NOT IMPLEMENTED");
+    console.log(command);
   }
 }

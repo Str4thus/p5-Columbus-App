@@ -16,4 +16,18 @@ describe('ColumbusModuleState', () => {
             expect(state.value["default"]).toBeTruthy();
         });
     });
+
+    describe("Updating", () => {
+        it("should have different references for previousState and currentState", () => {
+            let initlialStateData = { "updated": false };
+            let newStateData = { "updated": true };
+            
+            let moduleState = new ColumbusModuleState(initlialStateData);
+            moduleState.update(newStateData);
+
+            expect(moduleState.getPreviousState()).toEqual(initlialStateData);
+            expect(moduleState.getCurrentState()).toEqual(newStateData);
+            expect(moduleState.getCurrentState()).not.toEqual(moduleState.getPreviousState());
+        });
+    });
 });

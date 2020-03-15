@@ -5,14 +5,17 @@ import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusComman
 import { Utils } from 'src/columbus/util/Utils';
 import { SocketService } from '../socket/socket.service';
 import { ColumbusModuleState } from 'src/columbus/data-models/modules/ColumbusModuleState';
+import { IStateData } from 'src/columbus/data-models/modules/concrete-states/IStateData';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModuleDataService {
-  private connectedModules: ModuleDictionary = new ModuleDictionary();
+  connectedModules: ModuleDictionary = new ModuleDictionary();
 
-  constructor(private socketService: SocketService) { }
+  constructor(private socketService: SocketService) { 
+    this.addModule(new ColumbusModule(ColumbusModuleType.TEST));
+  }
 
   getModuleState(moduleType: ColumbusModuleType): ColumbusModuleState {
     return this.connectedModules.get(moduleType);
@@ -36,9 +39,9 @@ export class ModuleDataService {
     this.connectedModules.remove(moduleType);
   }
 
-  updateModuleState(moduleType: ColumbusModuleType, moduleState: ColumbusModuleState): ColumbusCommand {
+  updateModuleState(moduleType: ColumbusModuleType, newModuleStateData: IStateData): ColumbusCommand {
     let state = this.connectedModules.get(moduleType);
-    this.connectedModules.update(moduleType, moduleState);
+    this.connectedModules.update(moduleType, newModuleStateData);
 
     return this.generateCommand(state);
   }
@@ -65,7 +68,20 @@ export class ModuleDataService {
 }
 
 class ModuleDictionary {
+  private observers: any[] = [];
+
   dict: {} = {};
+
+  subscribe(x: (type, state) => void) {
+    this.observers.push(x);
+    console.log(this.observers);
+  }
+
+  private notify(type, state) {
+    for (let observer of this.observers) {
+      observer(type, state);
+    }
+  }
 
   get(moduleType: ColumbusModuleType): ColumbusModuleState {
     if (this.dict.hasOwnProperty(moduleType))
@@ -75,9 +91,10 @@ class ModuleDictionary {
 
   put(module: ColumbusModule) {
     this.dict[module.type] = module.state;
+    this.notify(module.type, module.state);
   }
 
-  update(moduleType: ColumbusModuleType, newState: ColumbusModuleState) {
+  update(moduleType: ColumbusModuleType, newState: IStateData) {
     this.dict[moduleType].update(newState);
   }
 

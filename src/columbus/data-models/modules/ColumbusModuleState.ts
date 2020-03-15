@@ -1,15 +1,17 @@
 import { BehaviorSubject } from 'rxjs';
+import { IStateData } from './concrete-states/IStateData';
+import { Utils } from 'src/columbus/util/Utils';
 
 export class ColumbusModuleState extends BehaviorSubject<{}> {
-    private previousState: {} = {};
+    private previousState: IStateData = {};
 
-    constructor(state: {} = {}) {
+    constructor(state: IStateData = {}) {
         super(state);
     }
 
-    update(newState: ColumbusModuleState) {
-        this.previousState = this.value;
-        this.next(newState.value);
+    update(newStateData: IStateData) {
+        this.previousState = Utils.deepClone(this.value);
+        this.next(Utils.deepClone(newStateData));
     }
 
     getPreviousState() {

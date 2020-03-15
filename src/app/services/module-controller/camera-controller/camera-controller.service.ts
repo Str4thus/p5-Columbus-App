@@ -1,30 +1,28 @@
 import { Injectable } from '@angular/core';
 import { ModuleDataService } from '../../module-data/module-data.service';
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
-import { ICameraState } from 'src/columbus/data-models/modules/concrete-states/ICameraState';
-import { ColumbusModuleState } from 'src/columbus/data-models/modules/ColumbusModuleState';
+import { ICameraStateData } from 'src/columbus/data-models/modules/concrete-states/ICameraStateData';
+import { ModuleControllerService } from '../module-controller.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CameraControllerService {
-  private currentState: ICameraState;
+export class CameraControllerService extends ModuleControllerService<ICameraStateData> {
 
-  constructor(private moduleDataSerivce: ModuleDataService) {
-    
-    moduleDataSerivce.getModuleState(ColumbusModuleType.CAMERA).subscribe((nextState: ICameraState) => {
-      this.currentState = nextState;
-    });
-
+  constructor(moduleDataService: ModuleDataService) {
+    super(moduleDataService, ColumbusModuleType.TEST);
   }
 
-  turnUp(deg: number) {
-    this.currentState.vrot = deg;
+  onStateChange(newStateData: ICameraStateData) { }
 
+  rotateVertically(deg: number) {
+    this.currentStateData.vrot = deg;
     this.updateModule();
   }
 
-  private updateModule() {
-    this.moduleDataSerivce.updateModuleState(ColumbusModuleType.CAMERA, new ColumbusModuleState(this.currentState));
+  rotateHorizontally(deg: number) {
+    this.currentStateData.hrot = deg;
+    
+    this.updateModule();
   }
 }
