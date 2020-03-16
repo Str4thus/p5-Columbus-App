@@ -1,5 +1,5 @@
 import { ColumbusCommand } from "./ColumbusCommand";
-import { OpCode } from '../Enums';
+import { OpCode, ColumbusEventType } from '../Enums';
 
 describe("ColumbusCommand", () => {
     describe("Creation", () => {
@@ -11,7 +11,7 @@ describe("ColumbusCommand", () => {
         });
 
         it("can be created with payload", () => {
-            let payload = { "test": true }
+            let payload = { t: ColumbusEventType.TEST, p: {"test": true} }
             let command = new ColumbusCommand(OpCode.DISPATCH, payload);
 
             expect(command).toBeTruthy();
@@ -22,7 +22,7 @@ describe("ColumbusCommand", () => {
 
     describe("Serialization", () => {
         it("serializes the command correctly", () => {
-            let payload = { "test": true }
+            let payload = { t: ColumbusEventType.TEST, p: {"test": true} }
             let command = new ColumbusCommand(OpCode.DISPATCH, payload);
             
             let serializedData = command.serialize();

@@ -1,4 +1,4 @@
-import { ColumbusModuleType } from "../data-models/Enums";
+import { ColumbusModuleType, ColumbusEventType } from "../data-models/Enums";
 import { ColumbusModule } from '../data-models/modules/ColumbusModule';
 import { IStateData } from '../data-models/modules/concrete-states/IStateData';
 
@@ -7,7 +7,7 @@ export class ModuleDictionary {
   // connctedModules[type] = module
   _observers: {} = {};
   protected connectedModules: {} = {};
-  protected _onModuleUpdated: (updatedModule) => void = () => {};
+  protected _onModuleUpdated: (commandEventType, updatedModule) => void = () => {};
 
   // Base Functionality
   getModule(moduleType: ColumbusModuleType): ColumbusModule {
@@ -32,7 +32,7 @@ export class ModuleDictionary {
     this._notify(module.type);
   }
 
-  updateState(moduleType: ColumbusModuleType, newStateData: IStateData) {
+  updateState(moduleType: ColumbusModuleType, commandEventType: ColumbusEventType, newStateData: IStateData) {
     if (newStateData instanceof ColumbusModule)
       throw new Error("Expected IStateData but got ColumbusModule!");
 
@@ -41,7 +41,7 @@ export class ModuleDictionary {
     if (module) {
       module.update(newStateData);
       this._notify(moduleType);
-      this._onModuleUpdated(module);
+      this._onModuleUpdated(commandEventType, module);
     }
   }
 

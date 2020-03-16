@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IStateData } from 'src/columbus/data-models/modules/concrete-states/IStateData';
 import { ModuleDataService } from '../module-data/module-data.service';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { ColumbusModuleType, ColumbusEventType } from 'src/columbus/data-models/Enums';
 import { BehaviorSubject } from 'rxjs';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { Utils } from 'src/columbus/util/Utils';
@@ -42,18 +42,18 @@ export abstract class ModuleControllerService<T extends IStateData> {
     this._moduleStateDataCopy.next(Utils.deepClone(newStateData) as T);
   }
 
-  _applyChanges() {
-    this.moduleDataSerivce.updateState(this._responsibleForModuleType, this._moduleStateDataCopy.value);
+  _applyChanges(commandEventType: ColumbusEventType) {
+    this.moduleDataSerivce.updateState(this._responsibleForModuleType, commandEventType, this._moduleStateDataCopy.value);
   }
 
   canOperate() {
     return this._canOperate.value;
   }
 
-  manipulateStateData(property, value): boolean {
+  manipulateStateData(commandEventType, property, value): boolean {
     if (this._canOperate.value) {
       this._moduleStateDataCopy.value[property] = value;
-      this._applyChanges();
+      this._applyChanges(commandEventType);
       return true;
     }
 

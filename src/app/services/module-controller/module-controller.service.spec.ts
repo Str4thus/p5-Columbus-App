@@ -2,7 +2,7 @@ import { ModuleControllerService } from './module-controller.service';
 import { IStateData } from 'src/columbus/data-models/modules/concrete-states/IStateData';
 import { ModuleDataService } from '../module-data/module-data.service';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { ColumbusModuleType, ColumbusEventType } from 'src/columbus/data-models/Enums';
 import { createMockModuleDataService } from 'src/columbus/mocking/Mocks.spec';
 
 
@@ -150,7 +150,7 @@ describe('AbstractModuleControllerService', () => {
       expect(mockService._moduleStateDataCopy.value).toEqual({});
 
       mockService._moduleStateDataCopy.value["hi"] = 0;
-      mockService._applyChanges();
+      mockService._applyChanges(ColumbusEventType.TEST);
 
       expect(mockService._moduleStateDataCopy.value).toEqual({"hi": 0});
       expect(mockModuleDataService.updateState).toHaveBeenCalled();
@@ -158,11 +158,11 @@ describe('AbstractModuleControllerService', () => {
 
     it("is not able to apply changes if the module is not connected", () => {
       mockService._canOperate.next(true);
-      mockService.manipulateStateData("hi", true);
+      mockService.manipulateStateData(ColumbusEventType.TEST, "hi", true);
       expect(mockModuleDataService.updateState).toHaveBeenCalledTimes(1);
 
       mockService._canOperate.next(false);
-      mockService.manipulateStateData("hi", true);
+      mockService.manipulateStateData(ColumbusEventType.TEST, "hi", true);
       expect(mockModuleDataService.updateState).toHaveBeenCalledTimes(1);
     });
   });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModuleDataService } from '../../module-data/module-data.service';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { ColumbusModuleType, ColumbusEventType } from 'src/columbus/data-models/Enums';
 import { ICameraStateData } from 'src/columbus/data-models/modules/concrete-states/ICameraStateData';
 import { ModuleControllerService } from '../module-controller.service';
 
@@ -14,10 +14,11 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
   }
 
   rotateHorizontally(deg: number) {
-    return this.manipulateStateData("hrot", deg);
+    // this.manipulateStateData(EventType.CAMERA_MOVE, "hrot", deg);
+    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", deg);
   }
 
   rotateVertically(deg: number): boolean {
-    return this.manipulateStateData("vrot", deg);
+    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "vrot", deg);
   }
 }

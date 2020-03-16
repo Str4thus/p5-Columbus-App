@@ -1,6 +1,6 @@
 import { ModuleDictionary } from "./ModuleDictionary";
 import { ColumbusModule } from '../data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from '../data-models/Enums';
+import { ColumbusModuleType, ColumbusEventType} from '../data-models/Enums';
 
 describe("ModuleDictionary", () => {
     let moduleDict: ModuleDictionary;
@@ -98,19 +98,19 @@ describe("ModuleDictionary", () => {
                 moduleDict.addModule(moduleA);
                 expect(moduleDict.getModuleState(module.type)).toEqual(moduleA.getCurrentState());
 
-                moduleDict.updateState(module.type, moduleB.getCurrentState());
+                moduleDict.updateState(module.type, ColumbusEventType.TEST, moduleB.getCurrentState());
                 expect(moduleDict.getModuleState(module.type)).toEqual(moduleB.getCurrentState());
             });
 
             it("cannot update disconnected module", () => {
                 expect(moduleDict.getModuleState(module.type)).toEqual(null);
 
-                moduleDict.updateState(module.type, moduleB.getCurrentState());
+                moduleDict.updateState(module.type, ColumbusEventType.TEST, moduleB.getCurrentState());
                 expect(moduleDict.getModuleState(module.type)).toEqual(null);
             });
 
             it("throws error if a module is passed instead of a new state", () => {
-                expect(() => moduleDict.updateState(module.type, module)).toThrowError("Expected IStateData but got ColumbusModule!");
+                expect(() => moduleDict.updateState(module.type, ColumbusEventType.TEST, module)).toThrowError("Expected IStateData but got ColumbusModule!");
             });
         });
 
