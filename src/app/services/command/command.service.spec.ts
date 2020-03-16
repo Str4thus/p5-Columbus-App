@@ -76,20 +76,19 @@ describe('CommandService', () => {
   describe("Subscription", () => {
     it("can subscribe to queue", () => {
       expect(service._observers.length).toBe(0);
-      service.subscribeToQueue((command) => {});
+      service.subscribeToQueue(() => {});
       expect(service._observers.length).toBe(1);
     });
 
     it("notifies observers when a new command gets added to the queue", () => {
       let callbackSpy = jasmine.createSpy("callbackSpy");
-      service.subscribeToQueue((command) => {
-        callbackSpy(command);
+      service.subscribeToQueue(() => {
+        callbackSpy();
       });
 
       service.addCommandToQueue(ColumbusEventType.TEST, testModule);
-      
-      let expectedCommand = service._generateCommand(ColumbusEventType.TEST, testModule);
-      expect(callbackSpy).toHaveBeenCalledWith(expectedCommand);
+
+      expect(callbackSpy).toHaveBeenCalled();
     });
   });
 });

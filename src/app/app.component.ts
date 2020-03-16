@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SocketService } from './services/socket/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent {
   constructor(
+    private socketService: SocketService, // Start SocketService for other services to access
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
@@ -23,5 +25,9 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  isSocketSerivceStarted() {
+    return this.socketService != null;
   }
 }

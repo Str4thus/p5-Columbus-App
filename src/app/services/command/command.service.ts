@@ -9,14 +9,14 @@ import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusComman
 })
 export class CommandService {
   _commandQueue: ColumbusCommand[] = [];
-  _observers: ((command: ColumbusCommand) => void)[] = [];
+  _observers: (() => void)[] = [];
   
 
   addCommandToQueue(commandEventType: ColumbusEventType, updatedModule: ColumbusModule) {
     let generatedCommand = this._generateCommand(commandEventType, updatedModule);
-    
+
     this._commandQueue.push(generatedCommand);
-    this._notify(generatedCommand);
+    this._notify();
   }
 
   getNextCommandInQueue(): ColumbusCommand {
@@ -24,14 +24,16 @@ export class CommandService {
     return command ? command : null;
   }
 
-  subscribeToQueue(observer: ((command: ColumbusCommand) => void)) {
+  subscribeToQueue(observer: (() => void)) {
     this._observers.push(observer);
+
+    this._notify();
   }
 
 
-  _notify(command) {
+  _notify() {
     for (let observer of this._observers) {
-      observer(command);
+      observer();
     }
   }
 
