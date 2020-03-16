@@ -7,7 +7,7 @@ export class ModuleDictionary {
   // connctedModules[type] = module
   _observers: {} = {};
   protected connectedModules: {} = {};
-  protected _onModuleUpdated: (commandEventType, updatedModule) => void = () => {};
+  _onModuleUpdated: (commandEventType, updatedModule) => void = () => {};
 
   // Base Functionality
   getModule(moduleType: ColumbusModuleType): ColumbusModule {

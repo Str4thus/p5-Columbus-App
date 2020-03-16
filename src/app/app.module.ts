@@ -19,8 +19,8 @@ import { ModuleDataService } from './services/module-data/module-data.service';
   providers: [
     StatusBar,
     SplashScreen,
-    SocketService,
     ModuleDataService,
+    SocketService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

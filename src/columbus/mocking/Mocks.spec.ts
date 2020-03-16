@@ -5,5 +5,9 @@ export function createMockModuleDataService() {
 }
 
 export function createMockSocketService() {
-    return jasmine.createSpyObj("SocketService", ["sendCommand"]);
+    return jasmine.createSpyObj("mockSocketService", []);
+}
+
+export function createMockCommandService() {
+    return jasmine.createSpyObj("mockCommandService", ["addCommandToQueue"]);
 }
