@@ -10,38 +10,53 @@ import { Utils } from 'src/columbus/util/Utils';
   providedIn: 'root'
 })
 export abstract class ModuleControllerService<T extends IStateData> {
-  moduleStateDataCopy: BehaviorSubject<T> = new BehaviorSubject({} as T);
-  canOperate: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  _moduleStateDataCopy: BehaviorSubject<T> = new BehaviorSubject({} as T);
+  _canOperate: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(protected moduleDataSerivce: ModuleDataService, public responsibleForModuleType: ColumbusModuleType) {
-    if (this.moduleDataSerivce.isModulePresent(responsibleForModuleType)) {
-      this._updateStateDataCopy(this.moduleDataSerivce.getModuleState(responsibleForModuleType));
+  constructor(protected moduleDataSerivce: ModuleDataService, public _responsibleForModuleType: ColumbusModuleType) {
+    if (this.moduleDataSerivce.isModulePresent(_responsibleForModuleType)) {
+      this._updateStateDataCopy(this.moduleDataSerivce.getModuleState(_responsibleForModuleType));
 
-      this.canOperate.next(true);
+      this._canOperate.next(true);
     }
 
-    this.moduleDataSerivce.subscribeToModule(responsibleForModuleType, this._subscribeCallback);
+    this.moduleDataSerivce.subscribeToModule(_responsibleForModuleType, (updatedModule) => this._subscribeCallback(updatedModule));
   }
 
   _subscribeCallback(updatedModule: ColumbusModule) {
     if (updatedModule) {
       this._updateStateDataCopy(updatedModule.getCurrentState());
 
-      if (!this.canOperate.value) {
-        this.canOperate.next(true);
+      if (!this._canOperate.value) {
+        this._canOperate.next(true);
       }
     } else {
-      if (this.canOperate.value) 
-        this.canOperate.next(false);
+      if (this._canOperate.value) {
+        this._updateStateDataCopy({});
+        this._canOperate.next(false);
+      }
     }
   }
 
   _updateStateDataCopy(newStateData: IStateData) {
-    this.moduleStateDataCopy.next(Utils.deepClone(newStateData));
+    this._moduleStateDataCopy.next(Utils.deepClone(newStateData) as T);
   }
 
-  applyChanges() {
-    if (this.canOperate.value)
-      this.moduleDataSerivce.updateState(this.responsibleForModuleType, this.moduleStateDataCopy.value);
+  _applyChanges() {
+    this.moduleDataSerivce.updateState(this._responsibleForModuleType, this._moduleStateDataCopy.value);
+  }
+
+  canOperate() {
+    return this._canOperate.value;
+  }
+
+  manipulateStateData(property, value): boolean {
+    if (this._canOperate.value) {
+      this._moduleStateDataCopy.value[property] = value;
+      this._applyChanges();
+      return true;
+    }
+
+    return false;
   }
 }

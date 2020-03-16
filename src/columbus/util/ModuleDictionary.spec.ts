@@ -150,7 +150,7 @@ describe("ModuleDictionary", () => {
             moduleDict.subscribeToModule(module.type, callback);
             expect(moduleDict._observers[module.type]).toEqual([callback, callback]);
         });
-        
+
         it("notifies registered observers correctly", () => {
             let callbackSpy1 = jasmine.createSpy("callback", () => {});
             let callbackSpy2 = jasmine.createSpy("callback", () => {});
@@ -187,11 +187,10 @@ describe("ModuleDictionary", () => {
         it('works without registered observers', () => {
             let callbackSpy1 = jasmine.createSpy("callback", (module) => {});
 
-            moduleDict.addModule(module);
-            moduleDict.removeModule(module.type);
-            moduleDict.updateState(module.type, {"updated": false});
-            moduleDict.clearModules();
-
+            moduleDict.subscribeToModule(ColumbusModuleType.TEST2, callbackSpy1); // Subscribe to TEST2
+            moduleDict.addModule(new ColumbusModule(ColumbusModuleType.TEST)); // Add TEST1
+            
+            expect(() => moduleDict._notify(ColumbusModuleType.TEST)).not.toThrow(); // Should not notify TEST2 observer
             expect(callbackSpy1).not.toHaveBeenCalled();
         });
     });

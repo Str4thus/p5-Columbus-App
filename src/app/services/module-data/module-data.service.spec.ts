@@ -5,6 +5,7 @@ import { SocketService } from '../socket/socket.service';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { ColumbusModuleType, OpCode } from 'src/columbus/util/Enums';
 import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
+import { createMockSocketService } from 'src/columbus/mocking/Mocks.spec';
 
 describe('ModuleDataService', () => {
   let testModule: ColumbusModule;
@@ -16,8 +17,8 @@ describe('ModuleDataService', () => {
     testModule = new ColumbusModule(ColumbusModuleType.TEST);
     
     // Mocks
-    mockSocketService = jasmine.createSpyObj("SocketService", ["sendCommand"]);
-
+    mockSocketService = createMockSocketService();
+    
     TestBed.configureTestingModule({
       providers: [
         {

@@ -2,28 +2,21 @@ import { TestBed } from '@angular/core/testing';
 
 import { CameraControllerService } from './camera-controller.service';
 import { ModuleDataService } from '../../module-data/module-data.service';
-import { ICameraStateData } from 'src/columbus/data-models/modules/concrete-states/ICameraStateData';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { createMockModuleDataService } from 'src/columbus/mocking/Mocks.spec';
 
-/*
+
 describe('CameraControllerService', () => {
   let service: CameraControllerService;
-  let currentModuleState: ColumbusModule;
+  let cameraModule: ColumbusModule;
   let mockModuleDataService;
-
-  const startState: ICameraStateData = {
-    vrot: 0,
-    hrot: 0
-  }
 
   beforeEach(() => {
     // Data
-    currentModuleState = new ColumbusModule(ColumbusModuleType.TEST, startState);
+    cameraModule = new ColumbusModule(ColumbusModuleType.CAMERA);
 
-    // Mocks
-    mockModuleDataService = createMockModuleDataServiceForControllers();
-
+    mockModuleDataService = createMockModuleDataService();
     // Module
     TestBed.configureTestingModule({
       providers: [
@@ -42,28 +35,38 @@ describe('CameraControllerService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe("Controller Functionality", () => {
-    it('can rotate camera vertically', () => {
-      let expectedModuleState = startState;
-      expectedModuleState.vrot = 40;
+  it("is responsible for module type CAMERA", () => {
+    expect(service._responsibleForModuleType).toEqual(ColumbusModuleType.CAMERA);
+  });
 
-      mockModuleDataService.foo(service);
-      service.rotateVertically(40);
-
-      //expect(mockModuleDataService.updateModuleState).toHaveBeenCalled();
-      //expect(currentModuleState).toEqual(expectedModuleState);
+  describe("Module Connectivity", () => {
+    it("becomes able to operate if the camera module connects", () => {
+      expect(service._canOperate.value).toBeFalsy();
+      service._subscribeCallback(cameraModule);
+      expect(service._canOperate.value).toBeTruthy();
     });
 
-    it('can rotate camera horizontally', () => {
-      let expectedModuleState = startState;
-      expectedModuleState.hrot = 40;
+    
+    it("becomes unable to operate if the camera module connects", () => {
+      expect(service._canOperate.value).toBeFalsy();
+      service._subscribeCallback(cameraModule);
+      expect(service._canOperate.value).toBeTruthy();
+      service._subscribeCallback(null);
+      expect(service._canOperate.value).toBeFalsy();
+    });
+  });
 
-      mockModuleDataService.foo(service);
-      service.rotateHorizontally(40);
+  describe("Module Functionality", () => {
+    it("can rotate horizontally", () => {
+      service._subscribeCallback(cameraModule); // connect camera module
 
-      //expect(mockModuleDataService.updateModuleState).toHaveBeenCalled();
-      //expect(currentModuleState).toEqual(expectedModuleState);
+      expect(service.rotateHorizontally(90)).toBeTruthy();
+    });
+
+    it("can rotate vertically", () => {
+      service._subscribeCallback(cameraModule); // connect camera module
+
+      expect(service.rotateVertically(90)).toBeTruthy();
     });
   });
 });
-*/

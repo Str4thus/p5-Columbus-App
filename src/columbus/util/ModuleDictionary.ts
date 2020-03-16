@@ -79,9 +79,8 @@ export class ModuleDictionary {
   }
 
   _notify(moduleType: ColumbusModuleType) {
-    if (Object.keys(this._observers).length > 0) {
+    if (this._observers.hasOwnProperty(moduleType)) {
       let observedModule = this.getModule(moduleType);
-
       for (let observer of this._observers[moduleType]) {
         observer(observedModule);
       }

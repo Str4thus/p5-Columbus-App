@@ -4,7 +4,7 @@ import { ColumbusModuleType } from './Enums';
 
 describe("Utils", () => {
     describe("differenceBetweenObjectsAfterChange", () => {
-        it("detects change of single property", () => {
+        it("detects changes of single property", () => {
             let beforeChanges = { "a": 0 };
             let afterChanges = { "a": 1 };
             let expectedChanges = { "a": 1 };
@@ -14,7 +14,7 @@ describe("Utils", () => {
             expect(actualChanges).toEqual(expectedChanges);
         });
 
-        it("detects change of multiple properties", () => {
+        it("detects changes of multiple properties", () => {
             let beforeChanges = { "a": 0, "b": 0 };
             let afterChanges = { "a": 1, "b": 3 };
             let expectedChanges = { "a": 1, "b": 3 };
@@ -24,7 +24,7 @@ describe("Utils", () => {
             expect(actualChanges).toEqual(expectedChanges);
         });
 
-        it("detects change of property that is an object", () => {
+        it("detects changes of property that is an object", () => {
             let beforeChanges = {
                 "a": 0,
                 "b": 0,
