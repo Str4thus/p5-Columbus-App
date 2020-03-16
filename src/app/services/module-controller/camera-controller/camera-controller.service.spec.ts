@@ -41,18 +41,18 @@ describe('CameraControllerService', () => {
 
   describe("Module Connectivity", () => {
     it("becomes able to operate if the camera module connects", () => {
-      expect(service._canOperate.value).toBeFalsy();
+      expect(service._canOperate).toBeFalsy();
       service._subscribeCallback(cameraModule);
-      expect(service._canOperate.value).toBeTruthy();
+      expect(service._canOperate).toBeTruthy();
     });
 
     
     it("becomes unable to operate if the camera module connects", () => {
-      expect(service._canOperate.value).toBeFalsy();
+      expect(service._canOperate).toBeFalsy();
       service._subscribeCallback(cameraModule);
-      expect(service._canOperate.value).toBeTruthy();
+      expect(service._canOperate).toBeTruthy();
       service._subscribeCallback(null);
-      expect(service._canOperate.value).toBeFalsy();
+      expect(service._canOperate).toBeFalsy();
     });
   });
 

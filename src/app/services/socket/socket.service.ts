@@ -52,6 +52,10 @@ export class SocketService {
     this._socket.onerror = e => this._onErrorCallback(e);
     this._socket.onclose = e => this._onCloseCallback(e);
   }
+
+  _sendHeartbeatACK() {
+    
+  }
 }
 
 

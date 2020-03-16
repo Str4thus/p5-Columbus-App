@@ -50,6 +50,10 @@ export abstract class ModuleControllerService<T extends IStateData> {
     this._moduleStateDataCopy = Utils.deepClone(newStateData) as T;
   }
 
+  /**
+   * Applies the changes that have been made to the internal copy to the actual module state.
+   * @param commandEventType event type that gets provided in the command
+   */
   _applyChanges(commandEventType: ColumbusEventType): void {
     this.moduleDataSerivce.updateState(this._responsibleForModuleType, commandEventType, this._moduleStateDataCopy);
   }
