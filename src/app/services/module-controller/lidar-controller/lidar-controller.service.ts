@@ -7,12 +7,11 @@ import { ILidarStateData } from 'src/columbus/data-models/modules/concrete-state
 @Injectable({
   providedIn: 'root'
 })
-export class LidarControllerService {
+export class LidarControllerService extends ModuleControllerService<ILidarStateData>{
 
   constructor(moduleDataService: ModuleDataService) {
-    //super(moduleDataService, ColumbusModuleType.LIDAR);
+    super(moduleDataService, ColumbusModuleType.LIDAR);
   }
 
-  onStateChange(newStateData: ILidarStateData) {
-  }
+  // TODO add functionality
 }

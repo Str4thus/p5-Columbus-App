@@ -7,12 +7,11 @@ import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 @Injectable({
   providedIn: 'root'
 })
-export class EngineControllerService {
-/*
+export class EngineControllerService extends ModuleControllerService<IEngineStateData>{
+
   constructor(moduleDataService: ModuleDataService) {
     super(moduleDataService, ColumbusModuleType.ENGINE);
   }
 
-  onStateChange(newStateData: IEngineStateData) {
-  }*/
+  // TODO add functionality
 }

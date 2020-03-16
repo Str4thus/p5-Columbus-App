@@ -2,20 +2,16 @@ import { TestBed } from '@angular/core/testing';
 
 import { LidarControllerService } from './lidar-controller.service';
 import { ModuleDataService } from '../../module-data/module-data.service';
-import { ILidarStateData } from 'src/columbus/data-models/modules/concrete-states/ILidarStateData';
-import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { createMockModuleDataService } from 'src/columbus/mocking/Mocks.spec';
 
-/*
+
 describe('LidarControllerService', () => {
   let service: LidarControllerService;
-  let currentModuleState: ColumbusModule;
   let mockModuleDataService;
 
-  const startState: ILidarStateData = {}
   beforeEach(() => {
-    // Data
-    currentModuleState = new ColumbusModule(ColumbusModuleType.TEST,startState);
+    // Mock
+    mockModuleDataService = createMockModuleDataService();
 
     // Module
     TestBed.configureTestingModule({
@@ -36,6 +32,6 @@ describe('LidarControllerService', () => {
   });
 
   describe("Controller Functionality", () => {
-
+    // TODO add tests
   });
-});*/
+});

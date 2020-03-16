@@ -2,24 +2,16 @@ import { TestBed } from '@angular/core/testing';
 
 import { EngineControllerService } from './engine-controller.service';
 import { ModuleDataService } from '../../module-data/module-data.service';
-import { LidarControllerService } from '../lidar-controller/lidar-controller.service';
-import { IEngineStateData } from 'src/columbus/data-models/modules/concrete-states/IEngineStateData';
-import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { createMockModuleDataService } from 'src/columbus/mocking/Mocks.spec';
 
-/*
+
 describe('EngineControllerService', () => {
-  let service: LidarControllerService;
-  let currentModuleState: ColumbusModule;
+  let service: EngineControllerService;
   let mockModuleDataSerivce;
 
-  const startState: IEngineStateData = { }
   beforeEach(() => {
-    // Data
-    currentModuleState = new ColumbusModule(ColumbusModuleType.TEST, startState);
-
     // Mocks
-    mockModuleDataSerivce = createMockModuleDataServiceForControllers();
+    mockModuleDataSerivce = createMockModuleDataService();
 
     // Module
     TestBed.configureTestingModule({
@@ -32,7 +24,7 @@ describe('EngineControllerService', () => {
     });
 
     // Service
-    service = TestBed.get(LidarControllerService);
+    service = TestBed.get(EngineControllerService);
   });
 
   it('should be created', () => {
@@ -40,6 +32,6 @@ describe('EngineControllerService', () => {
   });
 
   describe("Controller Functionality", () => {
-
+    // TODO add tests
   });
-});*/
+});
