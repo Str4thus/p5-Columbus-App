@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ModuleDataService } from './module-data.service';
 import { SocketService } from '../socket/socket.service';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType, OpCode } from 'src/columbus/util/Enums';
+import { ColumbusModuleType, OpCode } from 'src/columbus/data-models/Enums';
 import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
 import { createMockSocketService } from 'src/columbus/mocking/Mocks.spec';
 

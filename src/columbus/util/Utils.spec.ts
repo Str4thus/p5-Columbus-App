@@ -1,6 +1,6 @@
 import { Utils } from "./Utils";
 import { ColumbusModule } from '../data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from './Enums';
+import { ColumbusModuleType } from '../data-models/Enums';
 
 describe("Utils", () => {
     describe("differenceBetweenObjectsAfterChange", () => {

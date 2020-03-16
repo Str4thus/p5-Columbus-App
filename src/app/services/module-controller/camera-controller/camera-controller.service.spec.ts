@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { CameraControllerService } from './camera-controller.service';
 import { ModuleDataService } from '../../module-data/module-data.service';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 import { createMockModuleDataService } from 'src/columbus/mocking/Mocks.spec';
 
 

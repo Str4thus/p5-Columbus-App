@@ -1,4 +1,4 @@
-import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 import { IStateData } from './concrete-states/IStateData';
 import { Utils } from 'src/columbus/util/Utils';
 

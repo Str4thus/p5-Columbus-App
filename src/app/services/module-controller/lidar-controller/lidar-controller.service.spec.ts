@@ -4,7 +4,7 @@ import { LidarControllerService } from './lidar-controller.service';
 import { ModuleDataService } from '../../module-data/module-data.service';
 import { ILidarStateData } from 'src/columbus/data-models/modules/concrete-states/ILidarStateData';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 
 /*
 describe('LidarControllerService', () => {

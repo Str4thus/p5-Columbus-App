@@ -1,5 +1,5 @@
 import { ColumbusCommand } from "./ColumbusCommand";
-import { OpCode } from '../../util/Enums';
+import { OpCode } from '../Enums';
 
 describe("ColumbusCommand", () => {
     describe("Creation", () => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OpCode } from 'src/columbus/util/Enums';
+import { OpCode } from 'src/columbus/data-models/Enums';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
 import { Utils } from 'src/columbus/util/Utils';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IStateData } from 'src/columbus/data-models/modules/concrete-states/IStateData';
 import { ModuleDataService } from '../module-data/module-data.service';
-import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 import { BehaviorSubject } from 'rxjs';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { Utils } from 'src/columbus/util/Utils';

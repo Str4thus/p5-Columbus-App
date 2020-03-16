@@ -1,5 +1,5 @@
 import { ColumbusModule } from "./ColumbusModule";
-import { ColumbusModuleType } from 'src/columbus/util/Enums';
+import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
 import { IStateData } from './concrete-states/IStateData';
 
 describe('ColumbusModule', () => {

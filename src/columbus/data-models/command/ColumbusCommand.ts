@@ -1,4 +1,4 @@
-import { OpCode } from '../../util/Enums';
+import { OpCode } from '../Enums';
 
 interface IColumbusCommand {
     op: OpCode

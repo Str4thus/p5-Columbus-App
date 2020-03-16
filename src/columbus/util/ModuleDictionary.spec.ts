@@ -1,6 +1,6 @@
 import { ModuleDictionary } from "./ModuleDictionary";
 import { ColumbusModule } from '../data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from './Enums';
+import { ColumbusModuleType } from '../data-models/Enums';
 
 describe("ModuleDictionary", () => {
     let moduleDict: ModuleDictionary;
