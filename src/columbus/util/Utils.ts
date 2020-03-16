@@ -1,6 +1,14 @@
 import { IStateData } from '../data-models/modules/concrete-states/IStateData';
 
+/**
+ * Combines general useful utilities.
+ */
 export class Utils {
+    /**
+     * Returns the changes of an object between two states as a new object.
+     * @param beforeObj Object before changes
+     * @param afterObj Object after changes
+     */
     static differenceBetweenObjectsAfterChange(beforeObj: IStateData, afterObj: IStateData): {} {
         let difference = {}
 
@@ -25,6 +33,10 @@ export class Utils {
         return difference;
     }
 
+    /**
+     * Returns a new object, that can be modified without affecting its original.
+     * @param obj Object to deep clone
+     */
     static deepClone(obj) {
         return JSON.parse(JSON.stringify(obj));
     }

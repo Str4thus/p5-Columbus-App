@@ -1,58 +1,75 @@
-import { Injectable } from '@angular/core';
 import { IStateData } from 'src/columbus/data-models/modules/concrete-states/IStateData';
 import { ModuleDataService } from '../module-data/module-data.service';
 import { ColumbusModuleType, ColumbusEventType } from 'src/columbus/data-models/Enums';
-import { BehaviorSubject } from 'rxjs';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { Utils } from 'src/columbus/util/Utils';
 
-@Injectable({
-  providedIn: 'root'
-})
+/**
+ * Abstract Base Class for all *ModuleControllerServices.
+ * 
+ * Has a deep copy of the corresponding module state that can be modified and used to update the actual module state later on. 
+ */
 export abstract class ModuleControllerService<T extends IStateData> {
-  _moduleStateDataCopy: BehaviorSubject<T> = new BehaviorSubject({} as T);
-  _canOperate: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  _moduleStateDataCopy = {} as T;
+  _canOperate: boolean = false; /** Depends on whether the corresponding module is connected */
 
   constructor(protected moduleDataSerivce: ModuleDataService, public _responsibleForModuleType: ColumbusModuleType) {
-    if (this.moduleDataSerivce.isModulePresent(_responsibleForModuleType)) {
+    if (this.moduleDataSerivce.isModuleConnected(_responsibleForModuleType)) {
       this._updateStateDataCopy(this.moduleDataSerivce.getModuleState(_responsibleForModuleType));
 
-      this._canOperate.next(true);
+      this._canOperate = true;
     }
 
     this.moduleDataSerivce.subscribeToModule(_responsibleForModuleType, (updatedModule) => this._subscribeCallback(updatedModule));
   }
 
-  _subscribeCallback(updatedModule: ColumbusModule) {
+  /**
+   * Function that gets invoked when the observed module changes in state.
+   * @param updatedModule module that changed in state
+   */
+  _subscribeCallback(updatedModule: ColumbusModule): void {
     if (updatedModule) {
       this._updateStateDataCopy(updatedModule.getCurrentState());
 
-      if (!this._canOperate.value) {
-        this._canOperate.next(true);
+      if (!this._canOperate) {
+        this._canOperate = true;
       }
     } else {
-      if (this._canOperate.value) {
+      if (this._canOperate) {
         this._updateStateDataCopy({});
-        this._canOperate.next(false);
+        this._canOperate = false;
       }
     }
   }
 
-  _updateStateDataCopy(newStateData: IStateData) {
-    this._moduleStateDataCopy.next(Utils.deepClone(newStateData) as T);
+  /**
+   * Updates the copy of the module state.
+   * @param newStateData new state data
+   */
+  _updateStateDataCopy(newStateData: IStateData): void {
+    this._moduleStateDataCopy = Utils.deepClone(newStateData) as T;
   }
 
-  _applyChanges(commandEventType: ColumbusEventType) {
-    this.moduleDataSerivce.updateState(this._responsibleForModuleType, commandEventType, this._moduleStateDataCopy.value);
+  _applyChanges(commandEventType: ColumbusEventType): void {
+    this.moduleDataSerivce.updateState(this._responsibleForModuleType, commandEventType, this._moduleStateDataCopy);
   }
 
-  canOperate() {
-    return this._canOperate.value;
+  /**
+   * Whether the controller can operate.
+   */
+  canOperate(): boolean {
+    return this._canOperate;
   }
 
+  /**
+   * Interface to make changes to the state data.
+   * @param commandEventType command type that gets provided later on in the command that gets send to Columbus
+   * @param property property that should get changed
+   * @param value new value for the property
+   */
   manipulateStateData(commandEventType, property, value): boolean {
-    if (this._canOperate.value) {
-      this._moduleStateDataCopy.value[property] = value;
+    if (this._canOperate) {
+      this._moduleStateDataCopy[property] = value;
       this._applyChanges(commandEventType);
       return true;
     }

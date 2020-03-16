@@ -1,3 +1,6 @@
+/**
+ * Operation Code for command.
+ */
 export enum OpCode {
     DISPATCH = 0,
     HELLO = 1,
@@ -5,6 +8,9 @@ export enum OpCode {
     HEARTBEAT_ACK = 11,
 }
 
+/**
+ * Type of module.
+ */
 export enum ColumbusModuleType {
     TEST = "--..--.-.-.-",
     TEST2 = "..--.--...-",
@@ -14,6 +20,9 @@ export enum ColumbusModuleType {
     ENGINE = "engine",
 }
 
+/**
+ * Type of event that needs to be provided in the command.
+ */
 export enum ColumbusEventType {
     TEST,
     CAMERA_MOVE = "cam_move",

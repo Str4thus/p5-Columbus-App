@@ -1,5 +1,4 @@
 import { IStateData } from './IStateData';
 
-export interface IEngineStateData extends IStateData {
-    
-}
+/** Layout for engine state data */
+export interface IEngineStateData extends IStateData { }

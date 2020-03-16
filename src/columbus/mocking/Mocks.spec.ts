@@ -1,6 +1,5 @@
 export function createMockModuleDataService() {
-    return jasmine.createSpyObj("moduleDataSerivce", ["addModule", "removeModule", "updateState", "getModuleState", "isModulePresent", "subscribeToModule"]);
-
+    return jasmine.createSpyObj("moduleDataSerivce", ["addModule", "removeModule", "updateState", "getModuleState", "isModuleConnected", "subscribeToModule"]);
 }
 
 export function createMockSocketService() {

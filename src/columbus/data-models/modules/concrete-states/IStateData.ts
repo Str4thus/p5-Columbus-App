@@ -1,2 +1,2 @@
-// Marker Interface
+/** Maker Interface */
 export interface IStateData {}

@@ -5,6 +5,9 @@ import { CommandService } from '../command/command.service';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Manages the module data and fills the command queue of CommandService.
+ */
 export class ModuleDataService extends ModuleDictionary {
 
   constructor(private commandService: CommandService) {

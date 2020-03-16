@@ -13,7 +13,7 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
     super(moduleDataService, ColumbusModuleType.CAMERA);
   }
 
-  rotateHorizontally(deg: number) {
+  rotateHorizontally(deg: number): boolean {
     // this.manipulateStateData(EventType.CAMERA_MOVE, "hrot", deg);
     return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", deg);
   }

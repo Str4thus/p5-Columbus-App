@@ -7,7 +7,6 @@ import { CommandService } from '../command/command.service';
   providedIn: 'root'
 })
 export class SocketService {
-  _commandQueue;
   _socketConfiguration: SocketConfiguration;
   _socket: WebSocket = null;
   _isConnected: boolean = false;

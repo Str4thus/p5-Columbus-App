@@ -1,5 +1,4 @@
 import { IStateData } from './IStateData';
 
-export interface ILidarStateData extends IStateData {
-    
-}
+/** Layout for lidar state data */
+export interface ILidarStateData extends IStateData { }

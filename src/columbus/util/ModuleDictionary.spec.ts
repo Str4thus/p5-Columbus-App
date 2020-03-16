@@ -37,11 +37,11 @@ describe("ModuleDictionary", () => {
         });
 
         it("correctly returns whether a module is connected", () => {
-            expect(moduleDict.isModulePresent(module.type)).toBeFalsy();
+            expect(moduleDict.isModuleConnected(module.type)).toBeFalsy();
 
             moduleDict.addModule(module);
 
-            expect(moduleDict.isModulePresent(module.type)).toBeTruthy();
+            expect(moduleDict.isModuleConnected(module.type)).toBeTruthy();
         });
     });
 

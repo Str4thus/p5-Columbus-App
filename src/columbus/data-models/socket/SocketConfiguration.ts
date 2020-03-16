@@ -1,3 +1,6 @@
+/**
+ * Represents a configuration for the web socket connection.
+ */
 class SocketConfiguration {
     url = `ws://${this._host}:${this._port}`
 
