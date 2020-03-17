@@ -1,6 +1,6 @@
 import { Utils } from "./Utils";
 import { ColumbusModule } from '../data-models/modules/ColumbusModule';
-import { ColumbusModuleType } from '../data-models/Enums';
+import { ColumbusModuleType, OpCode } from '../data-models/Enums';
 
 describe("Utils", () => {
     describe("differenceBetweenObjectsAfterChange", () => {
@@ -86,6 +86,16 @@ describe("Utils", () => {
 
             expect(a.a).toEqual(b.a);
             expect(a.b.c).not.toEqual(b.b.c);
+        });
+    });
+
+    describe("isPartOfEnum", () => {
+        it("identifies correctly, whether a value is part on an enum", () => {
+            let wrongValue = -1;
+            let includedValue = 0;
+
+            expect(Utils.isPartOfEnum(OpCode, wrongValue)).toBeFalsy();
+            expect(Utils.isPartOfEnum(OpCode, includedValue)).toBeTruthy();
         });
     });
 });

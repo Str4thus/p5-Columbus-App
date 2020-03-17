@@ -8,7 +8,7 @@ import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule'
 describe('CommandService', () => {
   let testModule: ColumbusModule
   let service: CommandService
-  
+
   beforeEach(() => {
     testModule = new ColumbusModule(ColumbusModuleType.TEST);
 
@@ -76,7 +76,7 @@ describe('CommandService', () => {
   describe("Subscription", () => {
     it("can subscribe to queue", () => {
       expect(service._observers.length).toBe(0);
-      service.subscribeToQueue(() => {});
+      service.subscribeToQueue(() => { });
       expect(service._observers.length).toBe(1);
     });
 
@@ -89,6 +89,18 @@ describe('CommandService', () => {
       service.addCommandToQueue(ColumbusEventType.TEST, testModule);
 
       expect(callbackSpy).toHaveBeenCalled();
+    });
+
+    it("gets notified on subscription to poll previously queue commands", () => {
+      spyOn(service, "_notify");
+      let callbackSpy = jasmine.createSpy("callbackSpy");
+
+      service.addCommandToQueue(ColumbusEventType.TEST, testModule);
+      service.subscribeToQueue(() => {
+        callbackSpy();
+      });
+
+      expect(service._notify).toHaveBeenCalled();
     });
   });
 });

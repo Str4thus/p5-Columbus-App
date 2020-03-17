@@ -4,6 +4,8 @@
 export enum OpCode {
     DISPATCH = 0,
     HELLO = 1,
+    MODULES_UPDATE = 2,
+    
     HEARTBEAT = 10,
     HEARTBEAT_ACK = 11,
 }
@@ -15,9 +17,10 @@ export enum ColumbusModuleType {
     TEST = "--..--.-.-.-",
     TEST2 = "..--.--...-",
 
-    CAMERA = "camera",
+    CAMERA = "cam",
     LIDAR = "lidar",
     ENGINE = "engine",
+    VEHICLE = "vehicle",
 }
 
 /**
@@ -25,5 +28,9 @@ export enum ColumbusModuleType {
  */
 export enum ColumbusEventType {
     TEST,
+    MODULE_CONNECTED = "module_connected",
+    MODULE_DISCONNECTED = "module_disconnected",
+
     CAMERA_MOVE = "cam_move",
+
   }

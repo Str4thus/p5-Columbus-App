@@ -27,7 +27,7 @@ export class ColumbusCommand implements IColumbusCommand {
     /**
      * Serializes the command to be transmitted over the web socket connection.
      */
-    serialize(): String {
+    serialize(): string {
         let commandObj = {
             op: this.op,
             d: this.d

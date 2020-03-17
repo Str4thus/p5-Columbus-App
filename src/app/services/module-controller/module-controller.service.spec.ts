@@ -10,8 +10,6 @@ class MockControllerService extends ModuleControllerService<IStateData> {
   constructor(mockModuleDataService: ModuleDataService) {
     super(mockModuleDataService, ColumbusModuleType.TEST);
   }
-
-  onStateChange(newState: IStateData) { }
 }
 
 describe('AbstractModuleControllerService', () => {
@@ -21,7 +19,7 @@ describe('AbstractModuleControllerService', () => {
   beforeEach(() => {
     // Mock
     mockModuleDataService = createMockModuleDataService();
-    
+
     // Service
     mockService = new MockControllerService(mockModuleDataService);
   });
@@ -73,7 +71,7 @@ describe('AbstractModuleControllerService', () => {
     it("should update the state data copy on change", () => {
       let registeredCallback: ((updatedModule: ColumbusModule) => void) = null;
       let callbackSpy = jasmine.createSpy("registeredCallback", registeredCallback);
-      let testModule: ColumbusModule = new ColumbusModule(ColumbusModuleType.TEST, {"test": true});
+      let testModule: ColumbusModule = new ColumbusModule(ColumbusModuleType.TEST, { "test": true });
 
       // Mock setup
       mockModuleDataService.subscribeToModule.and.callFake((type, callback: (updatedModule) => void) => {
@@ -90,7 +88,7 @@ describe('AbstractModuleControllerService', () => {
 
       // Create mock service 
       mockService = new MockControllerService(mockModuleDataService);
-      
+
       // Trigger update callback with testmodule and check if the state changes accordingly
       mockModuleDataService.addModule(testModule);
       expect(callbackSpy).toHaveBeenCalledWith(testModule);
@@ -99,7 +97,7 @@ describe('AbstractModuleControllerService', () => {
       // Update the module state to trigger another update callback and create expected new module object
       mockModuleDataService.updateState(ColumbusModuleType.TEST, { "updated": true });
       let expectedModule = new ColumbusModule(ColumbusModuleType.TEST, { "updated": true });
-      
+
       // Trigger update callback with the expected module and check if the state matches
       expect(callbackSpy).toHaveBeenCalledWith(expectedModule);
       expect(mockService._moduleStateDataCopy).toEqual(expectedModule.getCurrentState());
@@ -110,7 +108,7 @@ describe('AbstractModuleControllerService', () => {
     });
 
     it('should set own state data copy to "{}" if the module disconnects', () => {
-      let testModule = new ColumbusModule(ColumbusModuleType.TEST, {"test": true});
+      let testModule = new ColumbusModule(ColumbusModuleType.TEST, { "test": true });
       expect(mockService._moduleStateDataCopy).toEqual({});
 
       mockService._subscribeCallback(testModule);
@@ -133,7 +131,7 @@ describe('AbstractModuleControllerService', () => {
 
     it("should not update state multiple times on multiple consecutive module disconnects", () => {
       spyOn(mockService, "_updateStateDataCopy");
-      
+
       mockService._canOperate = true;
       mockService._subscribeCallback(null); // module disconnects
 
@@ -152,7 +150,7 @@ describe('AbstractModuleControllerService', () => {
       mockService._moduleStateDataCopy["hi"] = 0;
       mockService._applyChanges(ColumbusEventType.TEST);
 
-      expect(mockService._moduleStateDataCopy).toEqual({"hi": 0});
+      expect(mockService._moduleStateDataCopy).toEqual({ "hi": 0 });
       expect(mockModuleDataService.updateState).toHaveBeenCalled();
     });
 
@@ -166,4 +164,28 @@ describe('AbstractModuleControllerService', () => {
       expect(mockModuleDataService.updateState).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe("Getting State Copy", () => {
+    let initlialStateData: IStateData;
+    let testModule: ColumbusModule;
+
+    beforeEach(() => {
+      initlialStateData = {"updated": false}
+      testModule = new ColumbusModule(ColumbusModuleType.TEST, initlialStateData);
+
+      mockService._subscribeCallback(testModule);
+    });
+
+    it("can get whole current state", () => {
+      expect(mockService.getStateData()).toEqual(initlialStateData);
+    });
+
+    it("can get property of current state", () => {
+      expect(mockService.getStateData("updated")).toEqual(initlialStateData["updated"]);
+    });
+
+    it("returns null if the queried property is not present", () => {
+      expect(mockService.getStateData("notPresent")).toEqual(null);
+    });
+  })
 });

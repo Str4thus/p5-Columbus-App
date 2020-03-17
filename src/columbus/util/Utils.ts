@@ -37,7 +37,16 @@ export class Utils {
      * Returns a new object, that can be modified without affecting its original.
      * @param obj Object to deep clone
      */
-    static deepClone(obj) {
+    static deepClone(obj): any {
         return JSON.parse(JSON.stringify(obj));
+    }
+
+    /**
+     * Returns whether the provided value is part of the enum.
+     * @param enumType enum type
+     * @param valueToCheck value, that should be in enum
+     */
+    static isPartOfEnum(enumType, valueToCheck): boolean {
+        return Object.values(enumType).includes(valueToCheck);
     }
 }

@@ -20,7 +20,6 @@ export class HelloworldComponent implements OnInit {
       this.f.addModule(new ColumbusModule(ColumbusModuleType.CAMERA));
       this.cameraController.rotateVertically(40);
       this.cameraController.rotateVertically(40);
-      console.log("added");
       clearInterval(x);
     }, 2500);
   }

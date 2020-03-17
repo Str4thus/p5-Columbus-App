@@ -13,7 +13,7 @@ import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusComman
 export class CommandService {
   _commandQueue: ColumbusCommand[] = [];
   _observers: (() => void)[] = [];
-  
+
   /**
    * Interface to queue a command. Automatically generates the command based on the changes of the current and previous state of the provided 'updatedModule'
    * @param commandEventType command type that gets provided later on in the command that gets send to Columbus

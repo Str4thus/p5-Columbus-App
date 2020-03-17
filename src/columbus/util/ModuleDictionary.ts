@@ -10,10 +10,10 @@ import { IStateData } from '../data-models/modules/concrete-states/IStateData';
 export class ModuleDictionary {
   /** connectedModules[ColumbusModuleType] = ColumbusModule */
   protected connectedModules: {} = {};
-  
+
   /** _observers[ColumbusModuleType] = ((observedModule) => void)[] */
   _observers: {} = {};
-  _onModuleUpdated: (commandEventType, updatedModule) => void = () => {};
+  _onModuleUpdated: (commandEventType, updatedModule) => void = () => { };
 
   /**
    * Returns the stored module of the specified type. Returns null if module is not present.
@@ -65,6 +65,28 @@ export class ModuleDictionary {
       module.update(newStateData);
       this._notify(moduleType);
       this._onModuleUpdated(commandEventType, module);
+    }
+  }
+
+
+  /**
+   * Applies given changes to the module type. Does not trigger command creation. SHOULD BE USED BY SOCKETSERVICE ONLY.
+   * @param moduleType type of module
+   * @param changesToApply object, that contains the properties to change with the new value
+   */
+  applyChangesToModuleState(moduleType: ColumbusModuleType, changesToApply: {}): void {
+    let module = this.getModule(moduleType);
+
+    if (module) {
+      let updatedModuleStateData = module.getCurrentState();
+
+      for (let property of Object.keys(changesToApply)) {
+        if (updatedModuleStateData.hasOwnProperty(property)) {
+          updatedModuleStateData[property] = changesToApply[property];
+        }
+      }
+
+      module.update(updatedModuleStateData);
     }
   }
 

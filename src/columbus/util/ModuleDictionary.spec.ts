@@ -114,6 +114,55 @@ describe("ModuleDictionary", () => {
             });
         });
 
+        describe("applyChangesToModuleState", () => {
+            it('invokes "update" on module after changes have been made', () => {
+                spyOn(moduleA, "update");
+
+                moduleDict.addModule(moduleA);
+                moduleDict.applyChangesToModuleState(module.type, {"number": 1});
+                expect(moduleA.update).toHaveBeenCalled();
+            });
+
+            it('updates the properties accordingly', () => {
+                moduleDict.addModule(moduleA);
+                expect(moduleDict.getModuleState(module.type)).toEqual(moduleA.getCurrentState());
+
+                moduleDict.applyChangesToModuleState(module.type, {"number": 1});
+                expect(moduleDict.getModuleState(module.type)).toEqual({"number": 1});
+
+            });
+
+            it('does not apply new properties to module state', () => {
+                moduleDict.addModule(moduleA);
+
+                moduleDict.applyChangesToModuleState(module.type, {"newProperty": true});
+                expect(moduleDict.getModuleState(module.type)).toEqual(moduleA.getCurrentState());
+            });
+
+            it('can update multiple properties', () => {
+                let megaModule = new ColumbusModule(ColumbusModuleType.TEST, {"propA": true, "propB": false, "propC": {"x": true}});
+                let changes = {"propB": {"x": true}, "propC": false}
+                let expectedNewState = {
+                    "propA": true,
+                    "propB": {"x": true},
+                    "propC": false
+                }
+
+                moduleDict.addModule(megaModule);
+
+                moduleDict.applyChangesToModuleState(module.type, changes);
+                expect(moduleDict.getModuleState(module.type)).toEqual(expectedNewState);
+            });
+
+            it('cannot apply changes to disconnected module', () => {
+                spyOn(moduleA, "update");
+                moduleDict.applyChangesToModuleState(module.type, {"number": 1});
+
+                expect(moduleDict.getModuleState(module.type)).toEqual(null);
+                expect(moduleA.update).not.toHaveBeenCalled();
+            });
+        });
+
         describe("remove", () => {
             it("removes module corretly", () => {
                 moduleDict.addModule(module);
