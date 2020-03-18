@@ -1,0 +1,15 @@
+<ion-grid>
+  <ion-row>
+      <ion-col size="12" size-md="4" *ngFor="let module of modules">
+        <ion-card translucent="true" class="ion-no-margin" [routerLink]="module.url" routerDirection="root">
+          <ion-img src={{module.imageUrl}} ></ion-img>
+          <ion-card-header>
+            {{ module.name }}
+          </ion-card-header>
+          <ion-card-content>
+            {{ module.description }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+  </ion-row>
+</ion-grid>
