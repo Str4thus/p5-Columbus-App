@@ -35,19 +35,24 @@ export class SocketService {
     let eventType = command.d.t;
     let payload = command.d.p || data["d"];
 
-    console.log("Received");
-    console.log(command);
 
     switch (opCode) {
       case OpCode.DISPATCH: // t: "camera", p: {"vrot": 90, "hrot": 30}
+        console.log("Received");
+        console.log(command);
         this._handleDispatch(eventType as ColumbusModuleType, payload);
         break;
 
       case OpCode.MODULES_UPDATE: // t: MODULE_CONNECTED, p: "camera"
-        this._handleModulesUpdate(eventType as ColumbusEventType, payload as ColumbusModuleType);
+        console.log("Received");
+        console.log(command);
+        this._handleHello(payload.modules);
+        //this._handleModulesUpdate(eventType as ColumbusEventType, payload as ColumbusModuleType);
         break;
 
       case OpCode.HELLO:
+        console.log("Received");
+        console.log(command);
         this._handleHello(payload.modules);
         break;
 
@@ -103,7 +108,7 @@ export class SocketService {
   _handleHello(connectedModules: []) {
     for (let moduleType of connectedModules) {
       if (Utils.isPartOfEnum(ColumbusModuleType, moduleType)) {
-        this.moduleDataService.addModule(moduleType);
+        this.moduleDataService.addModule(new ColumbusModule(moduleType, { "available": false }));
       }
     }
   }
@@ -114,9 +119,12 @@ export class SocketService {
   }
 
   sendCommand(command: ColumbusCommand) {
-    if (this._isConnected) {
+    if (command && command.op != OpCode.HEARTBEAT_ACK) {  
       console.log("Sent");
       console.log(command);
+    }
+
+    if (this._isConnected) {
       this._socket.send(command.serialize());
     }
   }

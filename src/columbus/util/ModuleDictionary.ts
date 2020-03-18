@@ -76,17 +76,16 @@ export class ModuleDictionary {
    */
   applyChangesToModuleState(moduleType: ColumbusModuleType, changesToApply: {}): void {
     let module = this.getModule(moduleType);
-
+    
     if (module) {
       let updatedModuleStateData = module.getCurrentState();
 
       for (let property of Object.keys(changesToApply)) {
-        if (updatedModuleStateData.hasOwnProperty(property)) {
-          updatedModuleStateData[property] = changesToApply[property];
-        }
+        updatedModuleStateData[property] = changesToApply[property];
       }
 
       module.update(updatedModuleStateData);
+      this._notify(moduleType);
     }
   }
 

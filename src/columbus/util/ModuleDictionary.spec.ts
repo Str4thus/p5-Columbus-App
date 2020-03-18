@@ -132,11 +132,11 @@ describe("ModuleDictionary", () => {
 
             });
 
-            it('does not apply new properties to module state', () => {
-                moduleDict.addModule(moduleA);
+            it('does apply new properties to module state', () => {
+                moduleDict.addModule(module);
 
                 moduleDict.applyChangesToModuleState(module.type, {"newProperty": true});
-                expect(moduleDict.getModuleState(module.type)).toEqual(moduleA.getCurrentState());
+                expect(moduleDict.getModuleState(module.type)).toEqual({"newProperty": true});
             });
 
             it('can update multiple properties', () => {
@@ -160,6 +160,14 @@ describe("ModuleDictionary", () => {
 
                 expect(moduleDict.getModuleState(module.type)).toEqual(null);
                 expect(moduleA.update).not.toHaveBeenCalled();
+            });
+
+            it('it notifies observers', () => {
+                spyOn(moduleDict, "_notify");
+                moduleDict.addModule(module);
+                moduleDict.applyChangesToModuleState(module.type, {"number": 1});
+
+                expect(moduleDict._notify).toHaveBeenCalled();
             });
         });
 

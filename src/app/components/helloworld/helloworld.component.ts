@@ -10,17 +10,17 @@ import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule'
   styleUrls: ['./helloworld.component.scss'],
 })
 export class HelloworldComponent implements OnInit {
-  constructor(private cameraController: CameraControllerService, private f: ModuleDataService) {
-    this.cameraController.rotateVertically(40);
+
+  constructor(private cameraController: CameraControllerService) {
   }
   
-  ngOnInit() {
-    // Simulate delayed connection of module
-    let x = setInterval(() => {
-      this.f.addModule(new ColumbusModule(ColumbusModuleType.CAMERA));
-      this.cameraController.rotateVertically(40);
-      this.cameraController.rotateVertically(40);
-      clearInterval(x);
-    }, 2500);
+  ngOnInit() {}
+
+  d() {
+    this.cameraController.disconnect();
+  }
+
+  i() {
+    console.log(this.cameraController.getStateData("available"));
   }
 }

@@ -20,4 +20,10 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
   rotateVertically(deg: number): boolean {
     return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "vrot", deg);
   }
+
+  disconnect() {
+    this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "available", false);
+    console.log(this._moduleStateDataCopy);
+    console.log(this.moduleDataSerivce.getModule(ColumbusModuleType.CAMERA));
+  }
 }
