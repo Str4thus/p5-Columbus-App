@@ -23,7 +23,7 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
 
   disconnect() {
     this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "available", false);
-    console.log(this._moduleStateDataCopy);
-    console.log(this.moduleDataSerivce.getModule(ColumbusModuleType.CAMERA));
+    //console.log(this._moduleStateDataCopy);
+    //console.log(this.moduleDataSerivce.getModule(ColumbusModuleType.CAMERA));
   }
 }

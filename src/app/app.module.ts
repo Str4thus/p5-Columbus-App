@@ -17,11 +17,12 @@ import { ModuleDataService } from './services/module-data/module-data.service';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: "MockSocket", useValue: null},
     StatusBar,
     SplashScreen,
     ModuleDataService,
     SocketService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { SocketConfiguration, defaultSocketConfiguration } from 'src/columbus/data-models/socket/SocketConfiguration';
 import { ModuleDataService } from '../module-data/module-data.service';
 import { CommandService } from '../command/command.service';
 import { ColumbusCommand } from 'src/columbus/data-models/command/ColumbusCommand';
-import { OpCode, ColumbusEventType, ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { OpCode, ColumbusModuleType } from 'src/columbus/data-models/Enums';
 import { ColumbusModule } from 'src/columbus/data-models/modules/ColumbusModule';
 import { Utils } from 'src/columbus/util/Utils';
 
@@ -12,11 +12,11 @@ import { Utils } from 'src/columbus/util/Utils';
 })
 export class SocketService {
   _socketConfiguration: SocketConfiguration;
-  _socket: WebSocket = null;
+  _socket: WebSocket | any = null;
   _isConnected: boolean = false;
 
-  constructor(private commandService: CommandService, private moduleDataService: ModuleDataService) {
-    this._initSocket(defaultSocketConfiguration);
+  constructor(private commandService: CommandService, private moduleDataService: ModuleDataService, @Inject("MockSocket") mockService) {
+    this._initSocket(defaultSocketConfiguration, mockService);
 
     this.commandService.subscribeToQueue(() => this._queueUpdateCallback());
   }
@@ -24,36 +24,24 @@ export class SocketService {
 
   // Callbacks
   _onOpenCallback(event) {
-    console.log("opened socket");
     this._isConnected = true;
   }
 
   _onMessageCallback(event) {
     let data = JSON.parse(event.data);
-    let command = new ColumbusCommand(data["op"], data["d"]);
-    let opCode = command.op;
-    let eventType = command.d.t;
-    let payload = command.d.p || data["d"];
-
+    let opCode = data["op"];
 
     switch (opCode) {
       case OpCode.DISPATCH: // t: "camera", p: {"vrot": 90, "hrot": 30}
-        console.log("Received");
-        console.log(command);
-        this._handleDispatch(eventType as ColumbusModuleType, payload);
+        let affectedModule = data["d"]["affected_module"];
+        let changesToApply = data["d"]["updates"];
+
+        this._handleDispatch(affectedModule as ColumbusModuleType, changesToApply);
         break;
 
-      case OpCode.MODULES_UPDATE: // t: MODULE_CONNECTED, p: "camera"
-        console.log("Received");
-        console.log(command);
-        this._handleHello(payload.modules);
-        //this._handleModulesUpdate(eventType as ColumbusEventType, payload as ColumbusModuleType);
-        break;
-
-      case OpCode.HELLO:
-        console.log("Received");
-        console.log(command);
-        this._handleHello(payload.modules);
+      case OpCode.STATE_UPDATE: // t: MODULE_CONNECTED, p: "camera"
+        let changedModules = data["d"];
+        this._handleStateUpdate(changedModules);
         break;
 
       case OpCode.HEARTBEAT:
@@ -61,8 +49,7 @@ export class SocketService {
         break;
 
       default:
-        console.log("Received invalid OpCode");
-        break;
+        throw new Error("Invalid OpCode!");
     }
   }
 
@@ -72,18 +59,20 @@ export class SocketService {
   }
 
   _onCloseCallback(event) {
-    console.log("closed socket");
     this._isConnected = false;
   }
 
   _queueUpdateCallback() {
     let command = this.commandService.getNextCommandInQueue();
-    this.sendCommand(command);
+
+    if (command) {
+      this.sendCommand(command);
+    }
   }
 
 
   // Functionality
-  _initSocket(configuarion: SocketConfiguration, mockSocket = null) {
+  _initSocket(configuarion: SocketConfiguration, mockSocket) {
     this._socketConfiguration = configuarion;
     this._socket = mockSocket ? mockSocket : new WebSocket(this._socketConfiguration.url); // Allow to use a mock socket object for testing purposes
 
@@ -94,21 +83,22 @@ export class SocketService {
   }
 
   _handleDispatch(affectedModule: ColumbusModuleType, changesToApply: {}) {
+    console.log(affectedModule);
+    console.log(changesToApply);
+
     this.moduleDataService.applyChangesToModuleState(affectedModule, changesToApply);
   }
 
-  _handleModulesUpdate(eventType: ColumbusEventType, moduleType: ColumbusModuleType) {
-    if (eventType == ColumbusEventType.MODULE_CONNECTED) {
-      this.moduleDataService.addModule(new ColumbusModule(moduleType));
-    } else if (eventType == ColumbusEventType.MODULE_DISCONNECTED) {
-      this.moduleDataService.removeModule(moduleType);
-    }
-  }
-
-  _handleHello(connectedModules: []) {
-    for (let moduleType of connectedModules) {
+  _handleStateUpdate(updatedModules: {}) {
+    for (let moduleType of Object.keys(updatedModules)) {
       if (Utils.isPartOfEnum(ColumbusModuleType, moduleType)) {
-        this.moduleDataService.addModule(new ColumbusModule(moduleType, { "available": false }));
+        if (updatedModules[moduleType] && !this.moduleDataService.isModuleConnected(moduleType as ColumbusModuleType)) {
+          this.moduleDataService.addModule(new ColumbusModule(moduleType as ColumbusModuleType));
+        }
+
+        if (!updatedModules[moduleType] && this.moduleDataService.isModuleConnected(moduleType as ColumbusModuleType)) {
+          this.moduleDataService.removeModule(moduleType as ColumbusModuleType);
+        }
       }
     }
   }
@@ -119,10 +109,11 @@ export class SocketService {
   }
 
   sendCommand(command: ColumbusCommand) {
-    if (command && command.op != OpCode.HEARTBEAT_ACK) {  
+    /*
+    if (command && command.op != OpCode.HEARTBEAT_ACK) {
       console.log("Sent");
       console.log(command);
-    }
+    }*/
 
     if (this._isConnected) {
       this._socket.send(command.serialize());
