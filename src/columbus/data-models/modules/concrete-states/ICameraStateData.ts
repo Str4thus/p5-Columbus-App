@@ -2,7 +2,7 @@ import { IStateData } from './IStateData';
 
 /** Layout for camera state data */
 export interface ICameraStateData extends IStateData {
-    available: boolean,
+    img: string,
     vrot: number,
     hrot: number
 }

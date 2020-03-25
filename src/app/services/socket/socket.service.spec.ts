@@ -93,13 +93,14 @@ describe('SocketService', () => {
         expect(service._isConnected).toBeTruthy();
       });
 
-      it('"_onCloseCallback" sets "_isConnected" to false', () => {
+      it('"_onCloseCallback" sets "_isConnected" to false and disconnects all modules', () => {
         service._isConnected = true;
         expect(service._isConnected).toBeTruthy();
 
         service._onCloseCallback(new Event("fakeClose"));
 
         expect(service._isConnected).toBeFalsy();
+        expect(mockModuleDataService.clearModules).toHaveBeenCalled();
       });
 
       describe("_onMessageCallback", () => {

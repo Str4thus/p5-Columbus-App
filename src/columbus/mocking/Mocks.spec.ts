@@ -1,5 +1,5 @@
 export function createMockModuleDataService() {
-    return jasmine.createSpyObj("moduleDataSerivce", ["addModule", "applyChangesToModuleState", "removeModule", "updateState", "getModuleState", "isModuleConnected", "subscribeToModule"]);
+    return jasmine.createSpyObj("moduleDataSerivce", ["addModule", "applyChangesToModuleState", "removeModule", "updateState", "getModuleState", "clearModules", "isModuleConnected", "subscribeToModule"]);
 }
 
 export function createMockSocketService() {
@@ -11,16 +11,5 @@ export function createMockCommandService() {
 }
 
 export function createMockSocket() {
-    let mockSocket = jasmine.createSpyObj("mockSocket", ["send", "onopen", "onmessage", "onerror", "onclose", "sendFakeMessage", "sendFakeHeartbeat"]);
-
-    mockSocket.sendFakeMessage.and.callFake((msg) => {
-        let event = {"data": msg}
-        mockSocket.onmessage(event);
-    });
-
-    mockSocket.sendFakeHeartbeat.and.callFake(() => {
-        console.log("NOT IMPLEMENTED YET!");
-    });
-
-    return mockSocket;
+    return jasmine.createSpyObj("mockSocket", ["send", "onopen", "onmessage", "onerror", "onclose"]);
 }

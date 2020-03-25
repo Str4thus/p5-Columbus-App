@@ -85,7 +85,7 @@ export abstract class ModuleControllerService<T extends IStateData> {
      * Returns the current state copy. Can specify a desired property of the state to get just that value. 
      * @param prop desired property to get the value of
      */
-  getStateData(prop: string = null): T {
+  getStateData(prop: string = null): T | any {
     if (prop) {
       if (!this._moduleStateDataCopy.hasOwnProperty(prop))
         return null;

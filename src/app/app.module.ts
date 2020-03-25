@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { SocketService } from './services/socket/socket.service';
 import { ModuleDataService } from './services/module-data/module-data.service';
+import { TestSocket } from 'src/columbus/mocking/TestSocket';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,8 @@ import { ModuleDataService } from './services/module-data/module-data.service';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: "MockSocket", useValue: null},
+    { provide: "MockSocket", useValue: null}, // Comment this out when using the demo
+    // FOR DEMO: { provide: "MockSocket", useValue: new TestSocket()},
     StatusBar,
     SplashScreen,
     ModuleDataService,

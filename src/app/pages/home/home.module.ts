@@ -21,4 +21,4 @@ import { HelloworldComponent } from 'src/app/components/helloworld/helloworld.co
   ],
   declarations: [HomePage, HelloworldComponent]
 })
-export class HomePageModule {}
+export class HomePageModule { }
