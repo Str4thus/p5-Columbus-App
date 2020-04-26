@@ -24,11 +24,15 @@ const routes: Routes = [
         path: 'drive',
         loadChildren: () => import('../modules/drive/drive.module').then( m => m.DrivePageModule)
       },
+      {
+        path: 'info',
+        loadChildren: () => import('../info/info.module').then( m => m.InfoPageModule)
+      },
     ]
   },
   {
     path: '',
-    redirectTo: '/menu/dashboard',
+    redirectTo: '/menu/info',
   },
 ];
 

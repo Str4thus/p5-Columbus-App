@@ -8,18 +8,18 @@ export class DashboardModulService {
   private moduleList: Module[] = [{
     name:"Drive Module",
     description:"This Module is to Drive the Robot!",
-    imageUrl: "https://assets.t3n.sc/news/wp-content/uploads/2018/04/bmw-autonomes-fahren-campus-soeder-1.jpg?auto=format&fit=crop&h=348&ixlib=php-2.3.0&w=620",
+    imageUrl: "https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/drive",
   },{
     name:"Camera Module",
     description:"With this Module, you can see the Camera view!",
-    imageUrl: "https://cdn.mos.cms.futurecdn.net/dzDWYxpsXBvVtNBd8Cuao8.jpg",
+    imageUrl: "https://images.pexels.com/photos/122400/pexels-photo-122400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/camera",
   }
   ,{
     name:"This is an other Module",
     description:"This Module can do some crazy stuff",
-    imageUrl:"https://media.pri.org/s3fs-public/styles/story_main/public/images/2019/08/robot_lead_crop.jpg?itok=Uc4umkLW",
+    imageUrl:"https://images.pexels.com/photos/697662/pexels-photo-697662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/settings",
   }
 ]

@@ -16,6 +16,10 @@ export class MenuPage implements OnInit {
     {
       title: 'Settings Page',
       url: '/menu/settings'
+    },
+    {
+      title: 'Info',
+      url: '/menu/info'
     }
   ];
   selectedpath = '';

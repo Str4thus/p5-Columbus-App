@@ -1,11 +1,11 @@
   <ion-menu contentId="content">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="dark">
         <ion-title>Menu</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list>
+      <ion-list> 
         <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
           <ion-item [routerLink]="p.url" routerDirection="root" [class.activate-item]="selectedpath === p.url">
             {{ p.title }}

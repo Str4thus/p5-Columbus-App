@@ -1,5 +1,7 @@
 {
   "name": "columbus",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
