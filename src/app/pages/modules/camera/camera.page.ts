@@ -31,6 +31,7 @@ export class CameraPage implements OnInit {
   }
 
   leftPress(e) {
+    console.log("yeet left");
     if (!this.rotatesRight)
       this.rotatesLeft = true;
 
@@ -48,7 +49,7 @@ export class CameraPage implements OnInit {
   }
 
   rightPress(e) {
-    console.log("yeet");
+    console.log("yeet right");
     if (!this.rotatesLeft)
       this.rotatesRight = true;
 
