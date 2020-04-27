@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ModuleControllerService } from '../module-controller.service';
 import { IEngineStateData } from 'src/columbus/data-models/modules/concrete-states/IEngineStateData';
 import { ModuleDataService } from '../../module-data/module-data.service';
-import { ColumbusModuleType } from 'src/columbus/data-models/Enums';
+import { ColumbusModuleType, ColumbusEventType } from 'src/columbus/data-models/Enums';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,7 @@ export class EngineControllerService extends ModuleControllerService<IEngineStat
     super(moduleDataService, ColumbusModuleType.ENGINE);
   }
 
-  // TODO add functionality
+  applyMovement(movement: [number, number, number, number]): boolean {
+    return this.manipulateStateData(ColumbusEventType.ENGINE_MOVE, "movement", movement);
+  }
 }

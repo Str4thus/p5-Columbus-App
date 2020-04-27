@@ -73,6 +73,8 @@ export abstract class ModuleControllerService<T extends IStateData> {
    */
   manipulateStateData(commandEventType, property, value): boolean {
     if (this._canOperate) {
+      console.log("operated!");
+      console.log(value);
       this._moduleStateDataCopy[property] = value;
       this._applyChanges(commandEventType);
       return true;

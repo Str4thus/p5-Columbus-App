@@ -60,13 +60,13 @@ describe('CameraControllerService', () => {
     it("can rotate horizontally", () => {
       service._subscribeCallback(cameraModule); // connect camera module
 
-      expect(service.rotateHorizontally(90)).toBeTruthy();
+      expect(service.setHorizontalRotation(90)).toBeTruthy();
     });
 
     it("can rotate vertically", () => {
       service._subscribeCallback(cameraModule); // connect camera module
 
-      expect(service.rotateVertically(90)).toBeTruthy();
+      expect(service.setVerticalRotation(90)).toBeTruthy();
     });
   });
 });

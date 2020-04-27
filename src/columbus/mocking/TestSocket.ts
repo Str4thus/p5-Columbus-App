@@ -21,6 +21,14 @@ export class TestSocket {
         this._sendMessage({ "op": OpCode.STATE_UPDATE, "d": { "cam": false } });
     }
 
+    connectEngine() {
+        this._sendMessage({ "op": OpCode.STATE_UPDATE, "d": { "engine": true } });
+    }
+
+    disconnectEngine() {
+        this._sendMessage({ "op": OpCode.STATE_UPDATE, "d": { "engine": false } });
+    }
+
     updateCameraImage() {
         this._sendMessage({ "op": OpCode.DISPATCH, "d": { "affected_module": "cam", "updates": { "img": this.imgs[this.index++] } } });
         this.index %= 2;

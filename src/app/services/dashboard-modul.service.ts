@@ -6,25 +6,24 @@ import { Module } from '../components/dashboard-modules/module.model';
 })
 export class DashboardModulService {
   private moduleList: Module[] = [{
-    name:"Drive Module",
-    description:"This Module is to Drive the Robot!",
+    name: "Steuermodul",
+    description: "Mit diesem Modul kann Columbus gesteuert werden!",
     imageUrl: "https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/drive",
-  },{
-    name:"Camera Module",
-    description:"With this Module, you can see the Camera view!",
+  }, {
+    name: "Kameramodul",
+    description: "Mit diesem Modul kann die Kamera gesteuert werden!",
     imageUrl: "https://images.pexels.com/photos/122400/pexels-photo-122400.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/camera",
   }
-  ,{
-    name:"This is an other Module",
-    description:"This Module can do some crazy stuff",
-    imageUrl:"https://images.pexels.com/photos/697662/pexels-photo-697662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+    , {
+    name: "Platzhaltermodul",
+    description: "Dies ist ein Platzhalter",
+    imageUrl: "https://images.pexels.com/photos/697662/pexels-photo-697662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
     url: "/menu/settings",
   }
-]
-getModules(){
-  return this.moduleList
-}
-  constructor() { }
+  ]
+  getModules() {
+    return this.moduleList
+  }
 }

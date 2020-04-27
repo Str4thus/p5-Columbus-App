@@ -19,7 +19,6 @@ export enum ColumbusModuleType {
     CAMERA = "cam",
     LIDAR = "lidar",
     ENGINE = "engine",
-    VEHICLE = "vehicle",
 }
 
 /**
@@ -32,4 +31,5 @@ export enum ColumbusEventType {
 
     CAMERA_MOVE = "cam_move",
 
+    ENGINE_MOVE = "engine_move",
   }

@@ -19,8 +19,8 @@ import { TestSocket } from 'src/columbus/mocking/TestSocket';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: "MockSocket", useValue: null}, // Comment this out when using the demo
-    // FOR DEMO: { provide: "MockSocket", useValue: new TestSocket()},
+    //{ provide: "MockSocket", useValue: null}, // Comment this out when using the demo
+    { provide: "MockSocket", useValue: new TestSocket()}, // For demo; Comment this out when NOT using demo
     StatusBar,
     SplashScreen,
     ModuleDataService,

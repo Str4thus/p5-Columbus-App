@@ -13,11 +13,21 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
     super(moduleDataService, ColumbusModuleType.CAMERA);
   }
 
-  rotateHorizontally(deg: number): boolean {
+  setHorizontalRotation(deg: number): boolean {
     return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", deg);
   }
 
-  rotateVertically(deg: number): boolean {
+  setVerticalRotation(deg: number): boolean {
     return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "vrot", deg);
+  }
+
+  rotateHorizontalBy(deg: number): boolean {
+    let currentHrot = this.getStateData("hrot");
+    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", currentHrot + deg);
+  }
+
+  rotateVerticalBy(deg: number): boolean {
+    let currentHrot = this.getStateData("hrot");
+    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", currentHrot - deg);
   }
 }

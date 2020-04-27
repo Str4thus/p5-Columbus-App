@@ -22,6 +22,8 @@ export class CommandService {
   addCommandToQueue(commandEventType: ColumbusEventType, updatedModule: ColumbusModule): void {
     let generatedCommand = this._generateCommand(commandEventType, updatedModule);
 
+    console.log(generatedCommand);
+    
     this._commandQueue.push(generatedCommand);
     this._notify();
   }
@@ -59,6 +61,9 @@ export class CommandService {
    * @param updatedModule module that has been updated
    */
   _generateCommand(commandEventType: ColumbusEventType, updatedModule: ColumbusModule): ColumbusCommand {
+    console.log(updatedModule.getPreviousState());
+    console.log(updatedModule.getCurrentState());
+    
     let changes = Utils.differenceBetweenObjectsAfterChange(updatedModule.getPreviousState(), updatedModule.getCurrentState());
     let command = new ColumbusCommand(OpCode.DISPATCH, { t: commandEventType, p: changes });
 

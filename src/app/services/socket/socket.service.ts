@@ -42,6 +42,11 @@ export class SocketService {
     let data = JSON.parse(event.data);
     let opCode = data["op"];
 
+    console.log("-----");
+    console.log("Received command: ");
+    console.log(data);
+    console.log("-----");
+
     switch (opCode) {
       case OpCode.DISPATCH: // d: {affected_module: "cam", updates: {"vrot": 90, "hrot": 30}}
         let affectedModule = data["d"]["affected_module"];
@@ -150,6 +155,11 @@ export class SocketService {
    * @param command command to send
    */
   sendCommand(command: ColumbusCommand) {
+    console.log("-----");
+    console.log("Sending command: ");
+    console.log(command);
+    console.log("-----");
+
     if (this._isConnected) {
       this._socket.send(command.serialize());
     }
