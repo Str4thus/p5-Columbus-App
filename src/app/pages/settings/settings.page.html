@@ -10,10 +10,10 @@
 
 </ion-header>
 <ion-content>
-  <ion-list>
+  <ion-list> 
     <ion-item>
-      <ion-checkbox slot="start"></ion-checkbox>
-      <ion-label>Darkmode</ion-label>
+      <ion-input type="text" placeholder="Enter Socket Adress" [(ngModel)]="currentUrl"></ion-input>
+      <ion-button (click)="setSocketAdress()">Set Adress</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
