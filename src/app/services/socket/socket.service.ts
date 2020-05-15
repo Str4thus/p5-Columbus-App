@@ -18,8 +18,8 @@ export class SocketService {
   _socket: WebSocket | any = null; /** Can either be a real WebSocket or a mock instance. */
   _isConnected: boolean = false;
 
-  constructor(private commandService: CommandService, private moduleDataService: ModuleDataService, @Inject("MockSocket") mockService) {
-    this._initSocket(defaultSocketConfiguration, mockService);
+  constructor(private commandService: CommandService, private moduleDataService: ModuleDataService, @Inject("MockSocket") mockSocket) {
+    this._initSocket(defaultSocketConfiguration, mockSocket); // mockSocket can be null, thus the socket is not mocked
 
     this.commandService.subscribeToQueue(() => this._queueUpdateCallback());
   }
@@ -163,6 +163,16 @@ export class SocketService {
     if (this._isConnected) {
       this._socket.send(command.serialize());
     }
+  }
+
+  /**
+   * Reinitializes the web socket. Used to change the socket configuration while the app is running.
+   * @param configuarion configuration data
+   */
+  reinit(configuarion: SocketConfiguration) {
+    this._socket.close();
+
+    this._initSocket(configuarion, null);
   }
 }
 
