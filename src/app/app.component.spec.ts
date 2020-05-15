@@ -6,9 +6,10 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
+import { SocketService } from './services/socket/socket.service';
+import { createMockSocketService } from 'src/columbus/mocking/Mocks.spec';
 
 describe('AppComponent', () => {
-
   let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy;
 
   beforeEach(async(() => {
@@ -24,7 +25,8 @@ describe('AppComponent', () => {
         { provide: StatusBar, useValue: statusBarSpy },
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: Platform, useValue: platformSpy },
-      ],
+        { provide: SocketService, useValue: createMockSocketService() },
+      ]
     }).compileComponents();
   }));
 
@@ -42,6 +44,9 @@ describe('AppComponent', () => {
     expect(splashScreenSpy.hide).toHaveBeenCalled();
   });
 
-  // TODO: add more tests!
-
+  it("should start SocketService", () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app: AppComponent = fixture.debugElement.componentInstance;
+    expect(app.isSocketSerivceStarted()).toBeTruthy();
+  });
 });

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-button slot="start" color="dark">
+      <ion-back-button defaultHref="menu/dashboard"></ion-back-button>
+    </ion-button>
+    <ion-title>Einstellungen <ion-icon name="settings-outline"></ion-icon>
+    </ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+<ion-content>
+  <ion-list> 
+    <ion-item>
+      <ion-input type="text" placeholder="Enter Socket Adress" [(ngModel)]="currentUrl"></ion-input>
+      <ion-button (click)="setSocketAdress()">Set Adress</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
