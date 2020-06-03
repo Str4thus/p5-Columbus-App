@@ -18,6 +18,8 @@ export class SocketService {
   _socket: WebSocket | any = null; /** Can either be a real WebSocket or a mock instance. */
   _isConnected: boolean = false;
 
+  cameraURL;
+
   constructor(private commandService: CommandService, private moduleDataService: ModuleDataService, @Inject("MockSocket") mockSocket) {
     this._initSocket(defaultSocketConfiguration, mockSocket); // mockSocket can be null, thus the socket is not mocked
 
@@ -108,6 +110,8 @@ export class SocketService {
   _initSocket(configuarion: SocketConfiguration, mockSocket) {
     this._socketConfiguration = configuarion;
     this._socket = mockSocket ? mockSocket : new WebSocket(this._socketConfiguration.url); // Allow to use a mock socket object for testing purposes
+
+    this.cameraURL = "http://" + this._socketConfiguration._host + ":" + this._socketConfiguration._port + "/cam"
 
     this._socket.onopen = e => this._onOpenCallback(e);
     this._socket.onmessage = e => this._onMessageCallback(e);
