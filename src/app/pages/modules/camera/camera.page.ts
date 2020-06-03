@@ -33,7 +33,7 @@ export class CameraPage implements OnInit {
       this.rotatesUp = true;
 
     this.moveIntervalHandle = setInterval(() => {
-      this.cameraController.rotateHorizontalBy(-2);
+      this.cameraController.rotateVerticalBy(-2);
     }, 100);
   }
 
@@ -49,7 +49,7 @@ export class CameraPage implements OnInit {
       this.rotatesDown = true;
 
     this.moveIntervalHandle = setInterval(() => {
-      this.cameraController.rotateHorizontalBy(-2);
+      this.cameraController.rotateVerticalBy(2);
     }, 100);
   }
 
