@@ -8,7 +8,6 @@ import { ModuleControllerService } from '../module-controller.service';
   providedIn: 'root'
 })
 export class CameraControllerService extends ModuleControllerService<ICameraStateData> {
-
   constructor(moduleDataService: ModuleDataService) {
     super(moduleDataService, ColumbusModuleType.CAMERA);
   }
@@ -27,7 +26,7 @@ export class CameraControllerService extends ModuleControllerService<ICameraStat
   }
 
   rotateVerticalBy(deg: number): boolean {
-    let currentHrot = this.getStateData("hrot");
-    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "hrot", currentHrot - deg);
+    let currentVrot = this.getStateData("vrot");
+    return this.manipulateStateData(ColumbusEventType.CAMERA_MOVE, "vrot", currentVrot - deg);
   }
 }

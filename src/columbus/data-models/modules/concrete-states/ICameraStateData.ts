@@ -4,5 +4,5 @@ import { IStateData } from './IStateData';
 export interface ICameraStateData extends IStateData {
     img: string,
     vrot: number,
-    hrot: number
+    hrot: number,
 }
