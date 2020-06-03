@@ -49,8 +49,8 @@ export class SocketService {
 
     switch (opCode) {
       case OpCode.DISPATCH: // d: {affected_module: "cam", updates: {"vrot": 90, "hrot": 30}}
-        let affectedModule = data["d"]["affected_module"];
-        let changesToApply = data["d"]["updates"];
+        let affectedModule = data["d"]["t"];
+        let changesToApply = data["d"]["p"];
 
         this._handleDispatch(affectedModule as ColumbusModuleType, changesToApply);
         break;
