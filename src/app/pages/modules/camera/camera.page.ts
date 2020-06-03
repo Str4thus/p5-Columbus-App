@@ -12,6 +12,8 @@ export class CameraPage implements OnInit {
   cameraImage: string = null; // b64 string
   rotatesLeft: boolean = false;
   rotatesRight: boolean = false;
+  rotatesUp: boolean = false;
+  rotatesDown: boolean = false;
 
   moveIntervalHandle = null; // stores the interval that invokes cameraController methods for camera movement
 
@@ -26,13 +28,43 @@ export class CameraPage implements OnInit {
     this.cameraImage = this.cameraController.getStateData("img");
   }
 
+  upPress(e) {
+    if (!this.rotatesDown)
+      this.rotatesUp = true;
+
+    this.moveIntervalHandle = setInterval(() => {
+      this.cameraController.rotateHorizontalBy(-2);
+    }, 100);
+  }
+
+  upRelease(e) {
+    if (this.rotatesUp) {
+      this.rotatesUp = false;
+      clearInterval(this.moveIntervalHandle);
+    }
+  }
+
+  downPress(e) {
+    if (!this.rotatesUp)
+      this.rotatesDown = true;
+
+    this.moveIntervalHandle = setInterval(() => {
+      this.cameraController.rotateHorizontalBy(-2);
+    }, 100);
+  }
+
+  downRelease(e) {
+    if (this.rotatesDown) {
+      this.rotatesDown = false;
+      clearInterval(this.moveIntervalHandle);
+    }
+  }
+
   leftPress(e) {
-    console.log("yeet left");
     if (!this.rotatesRight)
       this.rotatesLeft = true;
 
     this.moveIntervalHandle = setInterval(() => {
-      this.testImageUpdate();
       this.cameraController.rotateHorizontalBy(-2);
     }, 100);
   }
@@ -45,12 +77,10 @@ export class CameraPage implements OnInit {
   }
 
   rightPress(e) {
-    console.log("yeet right");
     if (!this.rotatesLeft)
       this.rotatesRight = true;
 
     this.moveIntervalHandle = setInterval(() => {
-      this.testImageUpdate();
       this.cameraController.rotateHorizontalBy(2);
     }, 100);
   }
