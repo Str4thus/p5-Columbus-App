@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { EngineControllerService } from 'src/app/services/module-controller/engine-controller/engine-controller.service';
 import { TestSocket } from 'src/columbus/mocking/TestSocket';
 import { CameraControllerService } from 'src/app/services/module-controller/camera-controller/camera-controller.service';
+import { SocketService } from 'src/app/services/socket/socket.service';
+
 
 @Component({
   selector: 'app-drive',
@@ -12,13 +14,7 @@ export class DrivePage implements OnInit {
   movement: [number, number, number, number] = [0, 0, 0, 0] // forward, right, backward, left; from 0 to 1
   cameraImage = null;
 
-  constructor(private engineController: EngineControllerService, private cameraController: CameraControllerService,
-     @Inject("MockSocket") private socket: TestSocket) { 
-    this.socket.close();
-    this.socket.open();
-    this.socket.connectCamera();
-    this.socket.connectEngine();
-
+  constructor(private engineController: EngineControllerService, private cameraController: CameraControllerService, private socket: SocketService) {
     this.testImageUpdate();
   }
 
@@ -26,7 +22,6 @@ export class DrivePage implements OnInit {
   }
 
   testImageUpdate() {  
-    this.socket.updateCameraImage();
     this.cameraImage = this.cameraController.getStateData("img");
   }
 

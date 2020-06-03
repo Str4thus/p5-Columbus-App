@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { CameraControllerService } from 'src/app/services/module-controller/camera-controller/camera-controller.service';
 import { TestSocket } from 'src/columbus/mocking/TestSocket';
+import { SocketService } from 'src/app/services/socket/socket.service';
 
 @Component({
   selector: 'app-camera',
@@ -14,11 +15,7 @@ export class CameraPage implements OnInit {
 
   moveIntervalHandle = null; // stores the interval that invokes cameraController methods for camera movement
 
-  constructor(private cameraController: CameraControllerService, @Inject("MockSocket") private socket: TestSocket) {
-    this.socket.close();
-    this.socket.open();
-    this.socket.connectCamera();
-
+  constructor(private cameraController: CameraControllerService, private socket: SocketService) {
     this.testImageUpdate();
   }
 
@@ -26,7 +23,6 @@ export class CameraPage implements OnInit {
   }
 
   testImageUpdate() {
-    this.socket.updateCameraImage();
     this.cameraImage = this.cameraController.getStateData("img");
   }
 
