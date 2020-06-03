@@ -9,9 +9,9 @@ export class Utils {
      * @param beforeObj Object before changes
      * @param afterObj Object after changes
      */
-    static differenceBetweenObjectsAfterChange(beforeObj: IStateData, afterObj: IStateData, depth=0): {} {
+    static differenceBetweenObjectsAfterChange(beforeObj: IStateData, afterObj: IStateData): {} {
         let difference = {}
-        
+
         if (!beforeObj) { // if beforeObj is undefined or null, afterObj contains all differences
             return afterObj;
         }
@@ -27,7 +27,7 @@ export class Utils {
                 let changes = afterObj[afterProp];
 
                 if(typeof afterObj[afterProp] === typeof {}) { // if property is an object, find differences
-                    changes = this.differenceBetweenObjectsAfterChange(beforeObj[afterProp], afterObj[afterProp], depth+1) 
+                    changes = this.differenceBetweenObjectsAfterChange(beforeObj[afterProp], afterObj[afterProp]) 
                 }
 
                 difference[afterProp] = changes;
